@@ -3,6 +3,14 @@ namespace view;
 
 class LayoutView {
 
+    /**
+     * Renders the page. 
+     *
+     * @param boolean $isLoggedIn
+     * @param LoginView $v
+     * @param DateTimeView $dtv
+     * @return void
+     */
     public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
         echo '<!DOCTYPE html>
       <html>
@@ -16,7 +24,6 @@ class LayoutView {
 
           <div class="container">
               ' . $v->response() . '
-
               ' . $dtv->show() . '
           </div>
          </body>
@@ -24,6 +31,12 @@ class LayoutView {
     ';
     }
 
+    /**
+     * Returns LoggedIn as html
+     *
+     * @param boolean $isLoggedIn
+     * @return string
+     */
     private function renderIsLoggedIn($isLoggedIn) {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
