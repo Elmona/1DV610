@@ -1,7 +1,5 @@
 <?php
 
-// Adding for testpurpose
-
 // Include the files needed.
 require_once 'view/LoginView.php';
 require_once 'view/DateTimeView.php';
