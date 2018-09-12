@@ -8,6 +8,14 @@ class DateTimeView {
      * @return string
      */
     public function show(): string {
-        return '<p>' . date('Y-m-d H:i:s') . '</p>';
+        $dayOfTheWeek = date('l');
+        $dayOfMonth = date('d');
+        $monthAsText = date('F');
+        $year = date('Y');
+        $time = date('H:i:s');
+        
+        return "<p>
+            ${dayOfTheWeek}, the ${dayOfMonth}th of ${monthAsText} ${year}. The time is ${time}
+        </p>";
     }
 }
