@@ -13,9 +13,9 @@ class DateTimeView {
         $monthAsText = date('F');
         $year = date('Y');
         $time = date('H:i:s');
-        
+
         return "<p>
-            ${dayOfTheWeek}, the ${dayOfMonth}th of ${monthAsText} ${year}. The time is ${time}
+            ${dayOfTheWeek}, the ${dayOfMonth}th of ${monthAsText} ${year}, The time is ${time}
         </p>";
     }
 }
