@@ -1,9 +1,13 @@
 <?php
+namespace view;
 
 class DateTimeView {
-	
-	public function show() {
-		$timeString = date('Y-m-d H:i:s'); 
-		return '<p>' . $timeString . '</p>';
-	}
+    /**
+     * Return current time as html.
+     *
+     * @return string
+     */
+    public function show(): string {
+        return '<p>' . date('Y-m-d H:i:s') . '</p>';
+    }
 }
