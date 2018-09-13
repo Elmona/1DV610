@@ -14,4 +14,11 @@ $v = new view\LoginView();
 $dtv = new view\DateTimeView();
 $lv = new view\LayoutView();
 
-$lv->render(false, $v, $dtv);
+if ($_SERVER['REQUEST_METHOD'] == 'POST'
+    && $_POST['LoginView::UserName']
+    && $_POST['LoginView::Password']) {
+    // echo "Should try to check if user name and password is correct.";
+    $lv->render(true, $v, $dtv);
+} else {
+    $lv->render(false, $v, $dtv);
+}

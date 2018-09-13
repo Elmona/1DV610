@@ -4,7 +4,7 @@ namespace view;
 class LayoutView {
 
     /**
-     * Renders the page. 
+     * Renders the page.
      *
      * @param boolean $isLoggedIn
      * @param LoginView $v
