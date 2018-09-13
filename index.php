@@ -1,6 +1,7 @@
 <?php
 
 // Include the files needed.
+require_once 'Secrets.php';
 require_once 'view/LoginView.php';
 require_once 'view/DateTimeView.php';
 require_once 'view/LayoutView.php';
