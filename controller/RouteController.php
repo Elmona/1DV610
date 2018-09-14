@@ -17,8 +17,14 @@ class RouteController {
         $this->loginView = new view\LoginView();
         $this->dateTimeView = new view\DateTimeView();
         $this->layoutView = new view\LayoutView();
-        $this->userName = $_POST['LoginView::UserName'];
-        $this->password = $_POST['LoginView::Password'];
+
+        if (isset($_POST['LoginView::UserName']) && !empty($_POST['LoginView::UserName'])) {
+            $this->userName = $_POST['LoginView::UserName'];
+        }
+
+        if (isset($_POST['LoginView::Password']) && !empty($_POST['LoginView::Password'])) {
+            $this->password = $_POST['LoginView::Password'];
+        }
     }
 
     /**
