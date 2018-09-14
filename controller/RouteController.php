@@ -7,8 +7,10 @@ class RouteController {
     private $loginView;
     private $dateTimeView;
     private $layoutView;
+
     private $userName;
     private $password;
+    private $logout;
 
     /**
      * Constructor make an instance of every view
@@ -18,25 +20,29 @@ class RouteController {
         $this->dateTimeView = new view\DateTimeView();
         $this->layoutView = new view\LayoutView();
 
-        if (isset($_POST['LoginView::UserName']) && !empty($_POST['LoginView::UserName'])) {
-            $this->userName = $_POST['LoginView::UserName'];
-        }
+        $this->userName = $this->saveIfExist('LoginView::UserName');
+        $this->password = $this->saveIfExist('LoginView::password');
+        $this->logout = $this->saveIfExist('LoginView::logout');
+    }
 
-        if (isset($_POST['LoginView::Password']) && !empty($_POST['LoginView::Password'])) {
-            $this->password = $_POST['LoginView::Password'];
+    private function saveIfExist($name) {
+        if (isset($_POST[$name]) && !empty($_POST[$name])) {
+            return $_POST[$name];
+        } else {
+            return null;
         }
     }
 
     /**
-     * Route depending on what to do.
+     * Main Router.
      *
      * @return void
      */
     public function route() {
         $login = false;
-
+        $msg = '';
         if (isset($_POST['LoginView::Logout'])) {
-            $this->loginView->msg('Bye bye!');
+            $msg = 'Bye bye!';
             session_destroy();
         }
         if (isset($_SESSION['login']) && $_SESSION['login'] == 'true') {
@@ -46,16 +52,18 @@ class RouteController {
                 if ($this->testCredentials()) {
                     $_SESSION['login'] = 'true';
                     $login = true;
-                    $this->loginView->msg('Welcome');
+                    $msg = 'Welcome';
                 } else {
-                    $this->loginView->msg('Wrong name or password');
+                    $msg = 'Wrong name or password';
                 }
             }
         }
+        $this->loginView->msg($msg);
         $this->layoutView->render($login, $this->loginView, $this->dateTimeView);
     }
 
     private function testCredentials() {
+        // TODO: Ask database.
         return $this->userName == 'Admin' && $this->password == 'test';
     }
 
