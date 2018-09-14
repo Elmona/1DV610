@@ -31,6 +31,7 @@ class RouteController {
             if ($this->userName == 'Admin' && $this->password == 'test') {
                 $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
             } else {
+                $this->loginView->msg('Wrong name or password');
                 $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
             }
         } else {
