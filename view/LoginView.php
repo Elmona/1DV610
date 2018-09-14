@@ -21,13 +21,12 @@ class LoginView {
     public function response() {
         $message = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!$this->getRequestUserName()) {
+            if (!$this->getRequestedUserName()) {
                 $message = 'Username is missing';
             } else if (!$this->getRequestedPassword()) {
                 $message = 'Password is missing';
             }
         }
-        // $message = $this->getRequestUserName();
 
         $response = $this->generateLoginFormHTML($message);
         //$response .= $this->generateLogoutButtonHTML($message);
@@ -61,7 +60,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestedUserName() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -76,11 +75,11 @@ class LoginView {
     }
 
     //CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-    private function getRequestUserName() {
-        return $_POST[self::$name];
+    private function getRequestedUserName(): bool {
+        return (isset($_POST[self::$name]) && !empty($_POST[self::$name]));
     }
 
-    private function getRequestedPassword() {
-        return $_POST[self::$password];
+    private function getRequestedPassword(): bool {
+        return (isset($_POST[self::$password]) && !empty($_POST[self::$password]));
     }
 }
