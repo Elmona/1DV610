@@ -21,8 +21,8 @@ class RouteController {
         $this->layoutView = new view\LayoutView();
 
         $this->userName = $this->saveIfExist('LoginView::UserName');
-        $this->password = $this->saveIfExist('LoginView::password');
-        $this->logout = $this->saveIfExist('LoginView::logout');
+        $this->password = $this->saveIfExist('LoginView::Password');
+        $this->logout = $this->saveIfExist('LoginView::Logout');
     }
 
     private function saveIfExist($name) {
