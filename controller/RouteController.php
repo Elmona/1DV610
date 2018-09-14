@@ -33,17 +33,29 @@ class RouteController {
      * @return void
      */
     public function route() {
-        if ($this->loginAttempt()) {
-            if ($this->userName == 'Admin' && $this->password == 'test') {
-                $this->loginView->msg('Welcome');
-                $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
-            } else {
-                $this->loginView->msg('Wrong name or password');
-                $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
-            }
-        } else {
-            $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+        $login = false;
+
+        if (isset($_POST['LoginView::Logout'])) {
+            session_destroy();
         }
+        if (isset($_SESSION['login']) && $_SESSION['login'] == 'true') {
+            $login = true;
+        } else {
+            if ($this->loginAttempt()) {
+                if ($this->testCredentials()) {
+                    $_SESSION['login'] = 'true';
+                    $login = true;
+                    $this->loginView->msg('Welcome');
+                } else {
+                    $this->loginView->msg('Wrong name or password');
+                }
+            }
+        }
+        $this->layoutView->render($login, $this->loginView, $this->dateTimeView);
+    }
+
+    private function testCredentials() {
+        return $this->userName == 'Admin' && $this->password == 'test';
     }
 
     /**

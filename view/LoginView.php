@@ -19,7 +19,7 @@ class LoginView {
      *
      * @return  void BUT writes to standard output and cookies!
      */
-    public function response() {
+    public function response($isLoggedIn) {
         // $message = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$this->getRequestedUserName()) {
@@ -29,7 +29,7 @@ class LoginView {
             }
         }
 
-        if ($this->message == 'Welcome') {
+        if ($isLoggedIn) {
             $response = $this->generateLogoutButtonHTML($this->message);
         } else {
             $response = $this->generateLoginFormHTML($this->message);

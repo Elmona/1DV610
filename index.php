@@ -11,6 +11,7 @@ require_once 'Config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', $_ENV['display_errors']);
 date_default_timezone_set($_ENV['timezone']);
+session_start();
 
 $router = new controller\RouteController();
 $router->route();
