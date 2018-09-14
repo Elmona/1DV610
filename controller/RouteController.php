@@ -36,6 +36,7 @@ class RouteController {
         $login = false;
 
         if (isset($_POST['LoginView::Logout'])) {
+            $this->loginView->msg('Bye bye!');
             session_destroy();
         }
         if (isset($_SESSION['login']) && $_SESSION['login'] == 'true') {
