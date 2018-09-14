@@ -60,7 +60,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestedUserName() . '" />
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUserNameIfExist() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -74,6 +74,13 @@ class LoginView {
 		';
     }
 
+    private function getUserNameIfExist() {
+        if (isset($_POST[self::$name]) && !empty($_POST[self::$name])) {
+            return $_POST[self::$name];
+        } else {
+            return '';
+        }
+    }
     //CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
     private function getRequestedUserName(): bool {
         return (isset($_POST[self::$name]) && !empty($_POST[self::$name]));
