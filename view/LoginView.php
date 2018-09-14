@@ -75,11 +75,7 @@ class LoginView {
     }
 
     private function getUserNameIfExist() {
-        if (isset($_POST[self::$name]) && !empty($_POST[self::$name])) {
-            return $_POST[self::$name];
-        } else {
-            return '';
-        }
+        return $this->getRequestedUserName() ? $_POST[self::$name] : '';
     }
     //CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
     private function getRequestedUserName(): bool {
