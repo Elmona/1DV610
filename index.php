@@ -15,11 +15,4 @@ $v = new view\LoginView();
 $dtv = new view\DateTimeView();
 $lv = new view\LayoutView();
 
-// Router
-if ($_SERVER['REQUEST_METHOD'] == 'POST'
-    && $_POST['LoginView::UserName']
-    && $_POST['LoginView::Password']) {
-    $lv->render(true, $v, $dtv);
-} else {
-    $lv->render(false, $v, $dtv);
-}
+$lv->render(false, $v, $dtv);
