@@ -56,25 +56,25 @@ class RouteController {
 
         if ($this->loggedin) {
             $login = true;
-        }
-
-        if ($this->post && $this->userName && $this->password) {
-            if ($this->testCredentials()) {
-                $_SESSION['login'] = true;
-                $login = true;
-                $msg = 'Welcome';
-            } else {
-                $msg = 'Wrong name or password';
+        } else {
+            if ($this->post && $this->userName && $this->password) {
+                if ($this->testCredentials()) {
+                    $_SESSION['login'] = true;
+                    $login = true;
+                    $msg = 'Welcome';
+                } else {
+                    $msg = 'Wrong name or password';
+                }
+            } else if ($this->post && $this->userName && !$this->password) {
+                $msg = 'Password is missing';
+            } else if ($this->post) {
+                $msg = 'Username is missing';
             }
-        } else if ($this->post && $this->userName && !$this->password) {
-            $msg = 'Password is missing';
-        } else if ($this->post) {
-            $msg = 'Username is missing';
-        }
 
-        if ($this->logout) {
-            $msg = 'Bye bye!';
-            session_destroy();
+            if ($this->logout) {
+                $msg = 'Bye bye!';
+                session_destroy();
+            }
         }
 
         $this->loginView->msg($msg);
