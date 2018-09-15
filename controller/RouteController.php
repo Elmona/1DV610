@@ -72,7 +72,7 @@ class RouteController {
             }
         }
 
-        if ($this->logout) {
+        if ($this->logout && $login == true) {
             $msg = 'Bye bye!';
             $login = false;
             session_destroy();
