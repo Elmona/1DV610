@@ -54,11 +54,6 @@ class RouteController {
         $msg = '';
         $login = false;
 
-        if ($this->logout) {
-            $msg = 'Bye bye!';
-            session_destroy();
-        }
-
         if ($this->loggedin) {
             $login = true;
         }
@@ -73,8 +68,13 @@ class RouteController {
             }
         } else if ($this->post && $this->userName && !$this->password) {
             $msg = 'Password is missing';
-        } else if ($this->post && !$this->userName && $this->password) {
+        } else if ($this->post) {
             $msg = 'Username is missing';
+        }
+
+        if ($this->logout) {
+            $msg = 'Bye bye!';
+            session_destroy();
         }
 
         $this->loginView->msg($msg);
