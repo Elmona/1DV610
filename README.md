@@ -1,3 +1,3 @@
 # Workshop 2 in the course 1DV608 
 
-`cp Config.php.example Config.php`
+`cp Config.example.php Config.php`
