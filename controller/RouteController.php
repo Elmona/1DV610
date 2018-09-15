@@ -70,11 +70,12 @@ class RouteController {
             } else if ($this->post) {
                 $msg = 'Username is missing';
             }
+        }
 
-            if ($this->logout) {
-                $msg = 'Bye bye!';
-                session_destroy();
-            }
+        if ($this->logout) {
+            $msg = 'Bye bye!';
+            $login = false;
+            session_destroy();
         }
 
         $this->loginView->msg($msg);
