@@ -6,13 +6,13 @@ use view;
 
 class RouteController {
     private $cookie;
-    private $globals;
 
     private $loginView;
     private $dateTimeView;
     private $layoutView;
 
     private $userName;
+    private $userName2;
     private $password;
     private $logout;
 
@@ -24,17 +24,16 @@ class RouteController {
      */
     public function __construct() {
         $this->cookie = new model\Cookie();
-        $this->globals = new model\Globals();
 
         $this->loginView = new view\LoginView();
         $this->dateTimeView = new view\DateTimeView();
         $this->layoutView = new view\LayoutView();
 
-        $this->userName = $this->globals->getPost('LoginView::UserName');
-        $this->password = $this->globals->getPost('LoginView::Password');
-        $this->logout = $this->globals->getPost('LoginView::Logout');
+        $this->userName = model\Globals::getPost('LoginView::UserName');
+        $this->password = model\Globals::getPost('LoginView::Password');
+        $this->logout = model\Globals::getPost('LoginView::Logout');
 
-        $this->isPost = $this->globals->isPost();
+        $this->isPost = model\Globals::isPost();
         $this->loggedin = isset($_SESSION['login']) && $_SESSION['login'] == 'true';
     }
 

@@ -8,7 +8,7 @@ class Globals {
      * @param [string] $name
      * @return string
      */
-    public function getPost($name) {
+    public static function getPost($name) {
         if (isset($_POST[$name]) && !empty($_POST[$name])) {
             return $_POST[$name];
         } else {
@@ -21,7 +21,7 @@ class Globals {
      *
      * @return boolean
      */
-    public function isPost() {
+    public static function isPost() {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 } 
