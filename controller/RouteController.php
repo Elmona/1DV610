@@ -1,9 +1,13 @@
 <?php
 namespace controller;
 
+use model;
 use view;
 
 class RouteController {
+    private $cookie;
+    private $globals;
+
     private $loginView;
     private $dateTimeView;
     private $layoutView;
@@ -12,37 +16,26 @@ class RouteController {
     private $password;
     private $logout;
 
-    private $post;
+    private $isPost;
     private $loggedin;
 
     /**
-     * Constructor make an instance of every view
+     * Constructor
      */
     public function __construct() {
+        $this->cookie = new model\Cookie();
+        $this->globals = new model\Globals();
+
         $this->loginView = new view\LoginView();
         $this->dateTimeView = new view\DateTimeView();
         $this->layoutView = new view\LayoutView();
 
-        $this->userName = $this->saveIfExist('LoginView::UserName');
-        $this->password = $this->saveIfExist('LoginView::Password');
-        $this->logout = $this->saveIfExist('LoginView::Logout');
+        $this->userName = $this->globals->getPost('LoginView::UserName');
+        $this->password = $this->globals->getPost('LoginView::Password');
+        $this->logout = $this->globals->getPost('LoginView::Logout');
 
-        $this->post = $_SERVER['REQUEST_METHOD'] == 'POST';
+        $this->isPost = $this->globals->isPost();
         $this->loggedin = isset($_SESSION['login']) && $_SESSION['login'] == 'true';
-    }
-
-    /**
-     * Check if global variable is set and return it.
-     *
-     * @param [string] $name
-     * @return string
-     */
-    private function saveIfExist($name) {
-        if (isset($_POST[$name]) && !empty($_POST[$name])) {
-            return $_POST[$name];
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -57,17 +50,17 @@ class RouteController {
         if ($this->loggedin) {
             $login = true;
         } else {
-            if ($this->post && $this->userName && $this->password) {
+            if ($this->isPost && $this->userName && $this->password) {
                 if ($this->testCredentials()) {
-                    $_SESSION['login'] = true;
+                    $this->saveLogin();
                     $login = true;
                     $msg = 'Welcome';
                 } else {
                     $msg = 'Wrong name or password';
                 }
-            } else if ($this->post && $this->userName && !$this->password) {
+            } else if ($this->isPost && $this->userName && !$this->password) {
                 $msg = 'Password is missing';
-            } else if ($this->post) {
+            } else if ($this->isPost && !$this->userName) {
                 $msg = 'Username is missing';
             }
         }
@@ -85,5 +78,10 @@ class RouteController {
     private function testCredentials() {
         // TODO: Ask database.
         return $this->userName == 'Admin' && $this->password == 'test';
+    }
+
+    private function saveLogin() {
+        $_SESSION['login'] = true;
+        $this->cookie->setcookie('login');
     }
 }
