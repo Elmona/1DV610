@@ -82,6 +82,6 @@ class RouteController {
 
     private function saveLogin() {
         $_SESSION['login'] = true;
-        $this->cookie->setcookie('login');
+        $this->cookie->setCookie('login');
     }
 }

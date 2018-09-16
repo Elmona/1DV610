@@ -1,6 +1,8 @@
 <?php
 namespace view;
 
+use Globals;
+
 class LoginView {
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
@@ -49,6 +51,8 @@ class LoginView {
      * @return  void, BUT writes to standard output!
      */
     private function generateLoginFormHTML($message) {
+        $globals = new \model\Globals();
+
         return '
 			<form method="post" >
 				<fieldset>
@@ -56,7 +60,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUserNameIfExist() . '" />
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $globals->getPost(self::$name) . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -70,15 +74,13 @@ class LoginView {
 		';
     }
 
+    /**
+     * Change message in LoginView
+     *
+     * @param [string] $msg
+     * @return void
+     */
     public function msg($msg) {
         $this->message = $msg;
-    }
-
-    private function getUserNameIfExist() {
-        return $this->getRequestedUserName() ? $_POST[self::$name] : '';
-    }
-
-    private function getRequestedUserName(): bool {
-        return (isset($_POST[self::$name]) && !empty($_POST[self::$name]));
     }
 }
