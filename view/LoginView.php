@@ -1,8 +1,6 @@
 <?php
 namespace view;
 
-use model;
-
 class LoginView {
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
@@ -22,10 +20,23 @@ class LoginView {
      * @return  void BUT writes to standard output and cookies!
      */
     public function response($isLoggedIn) {
+        $msg = '';
         if ($isLoggedIn) {
             $response = $this->generateLogoutButtonHTML($this->message);
         } else {
-            $response = $this->generateLoginFormHTML($this->message);
+            if ($this->isPost() && $this->getPost(self::$name) && $this->getPost(self::$password)) {
+                if ($this->testCredentials()) {
+                    // $this->saveLogin();
+                    $msg = 'Welcome';
+                } else {
+                    $msg = 'Wrong name or password';
+                }
+            } else if ($this->isPost() && $this->getPost(self::$name) && !$this->getPost(self::$password)) {
+                $msg = 'Password is missing';
+            } else if ($this->isPost() && !$this->getost(self::$name)) {
+                $msg = 'Username is missing';
+            }
+            $response = $this->generateLoginFormHTML($msg);
         }
 
         return $response;
@@ -58,7 +69,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . model\Globals::getPost(self::$name) . '" />
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPost(self::$name) . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -73,12 +84,30 @@ class LoginView {
     }
 
     /**
-     * Change message in LoginView
+     * Check if global variable is set and return it.
      *
-     * @param [string] $msg
-     * @return void
+     * @param [string] $name
+     * @return string
      */
-    public function msg($msg) {
-        $this->message = $msg;
+    public function getPost($name) {
+        if (isset($_POST[$name]) && !empty($_POST[$name])) {
+            return $_POST[$name];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Check if server REQUEST_METHOD is post
+     *
+     * @return boolean
+     */
+    public function isPost() {
+        return $_SERVER['REQUEST_METHOD'] == 'POST';
+    }
+
+    private function testCredentials() {
+        // TODO: Ask database.
+        return $this->getPost(self::$name) == 'Admin' && $this->getPost(self::$password) == 'test';
     }
 }
