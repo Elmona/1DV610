@@ -1,6 +1,8 @@
 <?php
 namespace view;
 
+use controller;
+
 class LoginView {
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
@@ -11,7 +13,6 @@ class LoginView {
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
 
-    private $message;
     /**
      * Create HTTP response
      *
@@ -22,19 +23,27 @@ class LoginView {
     public function response($isLoggedIn) {
         $msg = '';
         if ($isLoggedIn) {
-            $response = $this->generateLogoutButtonHTML($this->message);
+            if ($this->getPost(self::$logout)) {
+                controller\Login::logout();
+                $msg = 'Goodbye!';
+                return $this->generateLoginFormHTML($msg);
+            }
+            $response = $this->generateLogoutButtonHTML($msg);
         } else {
+            if ($this->isPost() && $this->getPost(self::$name) && !$this->getPost(self::$password)) {
+                $msg = 'Password is missing';
+            } else if ($this->isPost() && !$this->getPost(self::$name)) {
+                $msg = 'Username is missing';
+            }
+
             if ($this->isPost() && $this->getPost(self::$name) && $this->getPost(self::$password)) {
                 if ($this->testCredentials()) {
-                    // $this->saveLogin();
+                    controller\Login::saveLogin();
                     $msg = 'Welcome';
+                    return $this->generateLogoutButtonHTML($msg);
                 } else {
                     $msg = 'Wrong name or password';
                 }
-            } else if ($this->isPost() && $this->getPost(self::$name) && !$this->getPost(self::$password)) {
-                $msg = 'Password is missing';
-            } else if ($this->isPost() && !$this->getost(self::$name)) {
-                $msg = 'Username is missing';
             }
             $response = $this->generateLoginFormHTML($msg);
         }

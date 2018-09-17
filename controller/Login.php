@@ -6,8 +6,12 @@ class Login {
         return isset($_SESSION['login']) && $_SESSION['login'] == 'true';
     }
 
-    public function saveLogin() {
+    public static function saveLogin() {
         $_SESSION['login'] = true;
         // $this->cookie->setCookie('login');
+    }
+
+    public static function logout() {
+        session_destroy();
     }
 }
