@@ -5,6 +5,7 @@ use view;
 
 class MainController {
     private $view;
+    private $register;
     private $dtv;
     private $lv;
 
@@ -15,6 +16,7 @@ class MainController {
      */
     public function __construct() {
         $this->view = new view\LoginView();
+        $this->register = new view\RegisterView();
         $this->dtv = new view\DateTimeView();
         $this->lv = new view\LayoutView();
 
@@ -23,6 +25,11 @@ class MainController {
 
     public function returnHTML(): string {
         $msg = '';
+
+        if ($this->tryingToRegister()) {
+            return $this->lv->render(false, $this->register, $this->dtv);
+        }
+
         $login = $this->login->isLoggedIn();
 
         if ($this->tryingToLogout() && $login) {
@@ -49,6 +56,10 @@ class MainController {
 
         $this->view->message($msg);
         return $this->lv->render($login, $this->view, $this->dtv);
+    }
+
+    private function tryingToRegister(): bool {
+        return $this->view->register();
     }
 
     private function tryingToLoginWithoutNameAndPassword(): bool {

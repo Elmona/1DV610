@@ -1,7 +1,7 @@
 <?php
 namespace view;
 
-class LoginView {
+class LoginView extends \view\ChangeView {
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
     private static $name = 'LoginView::UserName';
@@ -70,6 +70,9 @@ class LoginView {
 		';
     }
 
+    public function register() {
+        return isset($_GET['register']);
+    }
     public function getLogout() {
         return $this->getPost(self::$logout);
     }

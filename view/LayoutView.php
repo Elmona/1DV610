@@ -11,7 +11,7 @@ class LayoutView {
      * @param DateTimeView $dtv
      * @return void
      */
-    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
+    public function render($isLoggedIn, ChangeView $v, DateTimeView $dtv) {
         return '<!DOCTYPE html>
       <html>
         <head>
