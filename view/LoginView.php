@@ -70,10 +70,6 @@ class LoginView extends \view\ChangeView {
 		';
     }
 
-    public function submit() {
-        return $this->getPost(self::$login);
-    }
-
     public function register() {
         return isset($_GET['register']);
     }
