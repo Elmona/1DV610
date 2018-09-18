@@ -26,9 +26,10 @@ class MainController {
         $login = $this->login->isLoggedIn();
 
         if ($this->tryingToLogout() && $login) {
-            $msg = 'Bye bye!';
             $login = false;
             $this->login->logout();
+            $this->view->message('Bye bye!');
+            return $this->lv->render($login, $this->view, $this->dtv);
         }
 
         if ($this->tryingToLogin() && !$login) {
