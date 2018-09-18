@@ -2,16 +2,20 @@
 namespace controller;
 
 class Login {
-    public function isLoggedIn() {
+    public function testcredentials($username, $password): bool {
+        return $username == 'Admin' && $password == 'test';
+    }
+
+    public function isLoggedIn(): bool {
         return isset($_SESSION['login']) && $_SESSION['login'] == 'true';
     }
 
-    public static function saveLogin() {
+    public function saveLogin(): void {
         $_SESSION['login'] = true;
         // $this->cookie->setCookie('login');
     }
 
-    public static function logout() {
+    public function logout(): void {
         session_destroy();
     }
 }

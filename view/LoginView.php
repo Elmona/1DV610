@@ -23,13 +23,6 @@ class LoginView {
         if ($isLoggedIn) {
             $response = $this->generateLogoutButtonHTML($this->message);
         } else {
-            // if ($this->isPost() && $this->getPost(self::$name) && !$this->getPost(self::$password)) {
-            //     $msg = 'Password is missing';
-            // } else if ($this->isPost() && !$this->getPost(self::$name)) {
-            //     $msg = 'Username is missing';
-            //         controller\Login::saveLogin();
-            //         return $this->generateLogoutButtonHTML($msg);
-            //         $msg = 'Wrong name or password';
             $response = $this->generateLoginFormHTML($this->message);
         }
 
@@ -92,6 +85,7 @@ class LoginView {
     public function message($msg) {
         $this->message = $msg;
     }
+
     /**
      * Check if global variable is set and return it.
      *
@@ -113,10 +107,5 @@ class LoginView {
      */
     public function isPost() {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
-    }
-
-    private function testCredentials() {
-        // TODO: Ask database.
-        return $this->getPost(self::$name) == 'Admin' && $this->getPost(self::$password) == 'test';
     }
 }

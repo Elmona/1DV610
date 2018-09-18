@@ -31,15 +31,16 @@ class MainController {
             $this->login->logout();
         }
 
-        if ($this->tryingToLogin()) {
-            if ($this->testcredentials()) {
-                $this->login->savelogin();
+        if ($this->tryingToLogin() && !$login) {
+            if ($this->login->testcredentials($this->view->getUserName(), $this->view->getPassword())) {
+                $this->login->saveLogin();
                 $login = true;
                 $msg = 'Welcome';
             } else {
                 $msg = 'Wrong name or password';
             }
-        } else if ($this->tryingToLoginWithoutName()) {
+        } else if ($this->tryingToLoginWithoutName()
+            || $this->tryingToLoginWithoutNameAndPassword()) {
             $msg = 'Username is missing';
         } else if ($this->tryingToLoginWithoutPassword()) {
             $msg = 'Password is missing';
@@ -49,23 +50,23 @@ class MainController {
         return $this->lv->render($login, $this->view, $this->dtv);
     }
 
-    private function tryingToLoginWithoutPassword(): bool {
-        return $this->view->isPost() && $this->view->getUserName() && !$this->view->getPassword();
+    private function tryingToLoginWithoutNameAndPassword(): bool {
+        return $this->view->isPost() && !$this->view->getUserName() && !$this->view->getPassword();
     }
 
     private function tryingToLoginWithoutName(): bool {
         return $this->view->isPost() && !$this->view->getUserName() && $this->view->getPassword();
     }
 
-    private function tryingToLogout(): bool {
-        return $this->view->getLogout();
+    private function tryingToLoginWithoutPassword(): bool {
+        return $this->view->isPost() && $this->view->getUserName() && !$this->view->getPassword();
     }
 
     private function tryingToLogin(): bool {
         return $this->view->isPost() && $this->view->getUserName() && $this->view->getPassword();
     }
 
-    private function testcredentials(): bool {
-        return $this->view->getUserName() == 'Admin' && $this->view->getPassword() == 'test';
+    private function tryingToLogout(): bool {
+        return $this->view->getLogout();
     }
 }
