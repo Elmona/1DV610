@@ -75,7 +75,7 @@ class MainController {
     }
 
     private function tryingToLogin(): bool {
-        return $this->view->isPost() && $this->view->getUserName() && $this->view->getPassword();
+        return $this->view->isPost() && $this->view->getUserName() && $this->view->getPassword() && $this->view->submit();
     }
 
     private function tryingToLogout(): bool {
