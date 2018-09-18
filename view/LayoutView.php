@@ -12,7 +12,7 @@ class LayoutView {
      * @return void
      */
     public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
-        echo '<!DOCTYPE html>
+        return '<!DOCTYPE html>
       <html>
         <head>
           <meta charset="utf-8">

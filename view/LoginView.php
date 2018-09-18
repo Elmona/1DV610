@@ -1,8 +1,6 @@
 <?php
 namespace view;
 
-use controller;
-
 class LoginView {
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
@@ -13,6 +11,7 @@ class LoginView {
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
 
+    private $message = '';
     /**
      * Create HTTP response
      *
@@ -21,31 +20,17 @@ class LoginView {
      * @return  void BUT writes to standard output and cookies!
      */
     public function response($isLoggedIn) {
-        $msg = '';
         if ($isLoggedIn) {
-            if ($this->getPost(self::$logout)) {
-                controller\Login::logout();
-                $msg = 'Goodbye!';
-                return $this->generateLoginFormHTML($msg);
-            }
-            $response = $this->generateLogoutButtonHTML($msg);
+            $response = $this->generateLogoutButtonHTML($this->message);
         } else {
-            if ($this->isPost() && $this->getPost(self::$name) && !$this->getPost(self::$password)) {
-                $msg = 'Password is missing';
-            } else if ($this->isPost() && !$this->getPost(self::$name)) {
-                $msg = 'Username is missing';
-            }
-
-            if ($this->isPost() && $this->getPost(self::$name) && $this->getPost(self::$password)) {
-                if ($this->testCredentials()) {
-                    controller\Login::saveLogin();
-                    $msg = 'Welcome';
-                    return $this->generateLogoutButtonHTML($msg);
-                } else {
-                    $msg = 'Wrong name or password';
-                }
-            }
-            $response = $this->generateLoginFormHTML($msg);
+            // if ($this->isPost() && $this->getPost(self::$name) && !$this->getPost(self::$password)) {
+            //     $msg = 'Password is missing';
+            // } else if ($this->isPost() && !$this->getPost(self::$name)) {
+            //     $msg = 'Username is missing';
+            //         controller\Login::saveLogin();
+            //         return $this->generateLogoutButtonHTML($msg);
+            //         $msg = 'Wrong name or password';
+            $response = $this->generateLoginFormHTML($this->message);
         }
 
         return $response;
@@ -92,17 +77,32 @@ class LoginView {
 		';
     }
 
+    public function getLogout() {
+        return $this->getPost(self::$logout);
+    }
+
+    public function getUserName() {
+        return $this->getPost(self::$name);
+    }
+
+    public function getPassword() {
+        return $this->getPost(self::$password);
+    }
+
+    public function message($msg) {
+        $this->message = $msg;
+    }
     /**
      * Check if global variable is set and return it.
      *
      * @param [string] $name
      * @return string
      */
-    public function getPost($name) {
+    private function getPost($name) {
         if (isset($_POST[$name]) && !empty($_POST[$name])) {
             return $_POST[$name];
         } else {
-            return null;
+            return false;
         }
     }
 
