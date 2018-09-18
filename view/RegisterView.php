@@ -25,10 +25,10 @@ class RegisterView extends ChangeView {
 					<label for="' . self::$passwordRepeat . '">Password :</label>
 					<input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
 
-					<input type="submit" name="' . self::$register . '" value="login" />
+					<input type="submit" name="' . self::$register . '" value="register" />
 				</fieldset>
 			</form>
-
+            <a href="/">Back to login</a>
         ';
     }
 }
