@@ -47,7 +47,7 @@ class MainController {
             return $this->lv->render(false, $this->view, $this->dtv);
         }
 
-        if ($this->tryingToLogin()) {
+        if ($this->tryingToLogin() && !$login) {
             if ($this->login->testcredentials($this->view->getUserName(), $this->view->getPassword())) {
                 $this->login->saveLogin();
                 $login = true;
