@@ -64,7 +64,6 @@ class LoginView extends \view\FormView {
 					<label for="' . self::$keep . '">Keep me logged in  :</label>
 					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
 
-                    ' . $this->generateHiddenField() . '
                     <input type="submit" name="' . self::$login . '" value="login" />
 				</fieldset>
 			</form>

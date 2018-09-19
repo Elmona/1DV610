@@ -38,38 +38,28 @@ class MainController {
             return $this->lv->render(false, $this->register, $this->dtv);
         }
 
-        // $this->session->isRepost2();
+        if ($this->tryingToLogout() && $login) {
+            $login = false;
+            $this->login->logout();
+            $this->view->message('Bye bye!');
+            return $this->lv->render($login, $this->view, $this->dtv);
+        } else if ($this->tryingToLogout() && !$login) {
+            return $this->lv->render(false, $this->view, $this->dtv);
+        }
 
-        if ($this->session->isRepost()) {
-            // echo "This is a repost!";
-            $_POST = array();
-        } else {
-            if ($this->tryingToLogout() && $login == true) {
-                $login = false;
-                $this->login->logout();
-                $this->view->message('Bye bye!');
-                return $this->lv->render($login, $this->view, $this->dtv);
-            } else if ($this->tryingToLogout() && $login == false) {
-                return $this->lv->render(false, $this->view, $this->dtv);
+        if ($this->tryingToLogin()) {
+            if ($this->login->testcredentials($this->view->getUserName(), $this->view->getPassword())) {
+                $this->login->saveLogin();
+                $login = true;
+                $msg = 'Welcome';
+            } else {
+                $msg = 'Wrong name or password';
             }
-
-            if ($this->tryingToLogin()) {
-                // if ($this->session->isRepost()) {
-                //     echo 'REPOST!!';
-                // }
-                if ($this->login->testcredentials($this->view->getUserName(), $this->view->getPassword())) {
-                    $this->login->saveLogin();
-                    $login = true;
-                    $msg = 'Welcome';
-                } else {
-                    $msg = 'Wrong name or password';
-                }
-            } else if ($this->tryingToLoginWithoutName()
-                || $this->tryingToLoginWithoutNameAndPassword()) {
-                $msg = 'Username is missing';
-            } else if ($this->tryingToLoginWithoutPassword()) {
-                $msg = 'Password is missing';
-            }
+        } else if ($this->tryingToLoginWithoutName()
+            || $this->tryingToLoginWithoutNameAndPassword()) {
+            $msg = 'Username is missing';
+        } else if ($this->tryingToLoginWithoutPassword()) {
+            $msg = 'Password is missing';
         }
 
         $this->view->message($msg);
