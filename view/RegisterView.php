@@ -1,7 +1,7 @@
 <?php
 namespace view;
 
-class RegisterView extends ChangeView {
+class RegisterView extends FormView {
     private static $name = 'RegisterView::UserName';
     private static $password = 'RegisterView::Password';
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';

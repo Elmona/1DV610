@@ -1,7 +1,7 @@
 <?php
 namespace view;
 
-class LoginView extends \view\ChangeView {
+class LoginView extends \view\FormView {
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
     private static $name = 'LoginView::UserName';
@@ -64,7 +64,8 @@ class LoginView extends \view\ChangeView {
 					<label for="' . self::$keep . '">Keep me logged in  :</label>
 					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
 
-					<input type="submit" name="' . self::$login . '" value="login" />
+                    ' . $this->generateHiddenField() . '
+                    <input type="submit" name="' . self::$login . '" value="login" />
 				</fieldset>
 			</form>
 		';
