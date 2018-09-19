@@ -8,14 +8,15 @@ class RegisterView extends FormView {
     private static $messageId = 'RegisterView::Message';
     private static $register = 'RegisterView::Register';
 
+    private $message = '';
+
     public function response($isLoggedin) {
-        $message = '';
         return '<h2>Register a new user</h2>
 			<form method="post" >
 				<fieldset>
                     <legend>Register a new user - Write username and password</legend>
 
-					<p id="' . self::$messageId . '">' . $message . '</p>
+					<p id="' . self::$messageId . '">' . $this->message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
                     <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" /><br>
@@ -30,5 +31,9 @@ class RegisterView extends FormView {
 				</fieldset>
 			</form>
         ';
+    }
+
+    public function msg($msg) {
+        $this->message = $msg;
     }
 }
