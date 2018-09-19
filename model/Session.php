@@ -8,10 +8,10 @@ class Session {
         $RequestSignature = md5($_SERVER['REQUEST_URI'] . $_SERVER['QUERY_STRING'] . print_r($_POST, true));
 
         if (isset($_SESSION['LastRequest']) && $_SESSION['LastRequest'] == $RequestSignature) {
-            echo 'This is a refresh.';
+            // echo 'This is a refresh.';
             return true;
         } else {
-            echo 'This is a new request.';
+            // echo 'This is a new request.';
             $_SESSION['LastRequest'] = $RequestSignature;
             return false;
         }
