@@ -41,14 +41,16 @@ class MainController {
         // $this->session->isRepost2();
 
         if ($this->session->isRepost()) {
-            //echo "This is a repost!";
+            // echo "This is a repost!";
             $_POST = array();
         } else {
-            if ($this->tryingToLogout()) {
+            if ($this->tryingToLogout() && $login == true) {
                 $login = false;
                 $this->login->logout();
                 $this->view->message('Bye bye!');
                 return $this->lv->render($login, $this->view, $this->dtv);
+            } else if ($this->tryingToLogout() && $login == false) {
+                return $this->lv->render(false, $this->view, $this->dtv);
             }
 
             if ($this->tryingToLogin()) {
