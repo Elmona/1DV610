@@ -1,7 +1,7 @@
 <?php
 namespace controller;
 
-use modell;
+use model;
 use view;
 
 class MainController {
@@ -24,8 +24,8 @@ class MainController {
         $this->dtv = new view\DateTimeView();
         $this->lv = new view\LayoutView();
 
-        $this->session = new modell\Session();
-        $this->server = new modell\Server();
+        $this->session = new model\Session();
+        $this->server = new model\Server();
 
         $this->login = new Login();
     }
@@ -39,6 +39,7 @@ class MainController {
         }
 
         if ($this->server->isRepost()) {
+            echo "This is a repost!";
             $_POST = array();
         } else {
             if ($this->tryingToLogout()) {

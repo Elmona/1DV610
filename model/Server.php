@@ -1,5 +1,5 @@
 <?php
-namespace modell;
+namespace model;
 
 class Server {
     public function isRepost() {

@@ -1,5 +1,5 @@
 <?php
-namespace modell;
+namespace model;
 
 class Session {
     private static $key = 'key';
@@ -9,6 +9,7 @@ class Session {
         $_SESSION[self::$key] = $randomNumber;
         return $randomNumber;
     }
+
     public function getName() {
         return self::$key;
     }
@@ -18,7 +19,6 @@ class Session {
     }
 
     public function isRepost() {
-        // echo md5($_SERVER['REQUEST_URI'] . $_SERVER['QUERY_STRING'] . print_r($_POST, true));
         return isset($_POST[self::$key]) && $_POST[self::$key] != $_SESSION[self::$key];
     }
 }

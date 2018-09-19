@@ -12,6 +12,7 @@ class Login {
 
     public function saveLogin(): void {
         $_SESSION['login'] = true;
+        // header('Location: /');
         // $this->cookie->setCookie('login');
     }
 
