@@ -38,8 +38,10 @@ class MainController {
             return $this->lv->render(false, $this->register, $this->dtv);
         }
 
-        if ($this->server->isRepost()) {
-            echo "This is a repost!";
+        // $this->session->isRepost2();
+
+        if ($this->session->isRepost()) {
+            //echo "This is a repost!";
             $_POST = array();
         } else {
             if ($this->tryingToLogout()) {
@@ -50,9 +52,9 @@ class MainController {
             }
 
             if ($this->tryingToLogin()) {
-                if ($this->session->isRepost()) {
-                    echo 'REPOST!!';
-                }
+                // if ($this->session->isRepost()) {
+                //     echo 'REPOST!!';
+                // }
                 if ($this->login->testcredentials($this->view->getUserName(), $this->view->getPassword())) {
                     $this->login->saveLogin();
                     $login = true;
