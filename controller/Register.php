@@ -10,6 +10,7 @@ class Register {
         $this->registerView = new view\RegisterView();
     }
     public function checkInputErrors() {
-        return 'Username has too few characters, at least 3 characters.';
+        return 'Username has too few characters, at least 3 characters.<br>
+        Password has too few characters, at least 6 characters.';
     }
 }
