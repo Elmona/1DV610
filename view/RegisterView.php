@@ -33,6 +33,31 @@ class RegisterView extends FormView {
         ';
     }
 
+    public function getUserName() {
+        return $this->getPost(self::$name);
+    }
+
+    public function getPassword() {
+        return $this->getPost(self::$password);
+    }
+
+    public function getPasswordRepeat() {
+        return $this->getPost(self::$passwordRepeat);
+    }
+
+    /**
+     * Check if global variable is set and return it.
+     *
+     * @param [string] $name
+     * @return string
+     */
+    private function getPost($name) {
+        if (isset($_POST[$name]) && !empty($_POST[$name])) {
+            return $_POST[$name];
+        } else {
+            return false;
+        }
+    }
     public function msg($msg) {
         $this->message = $msg;
     }

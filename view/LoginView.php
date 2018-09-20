@@ -88,7 +88,6 @@ class LoginView extends \view\FormView {
     public function message($msg) {
         $this->message = $msg;
     }
-
     /**
      * Check if global variable is set and return it.
      *

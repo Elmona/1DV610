@@ -11,11 +11,9 @@ class MainController {
     private $layoutView;
 
     private $session;
-    private $server;
     private $userLoginData;
 
     private $login;
-    private $register;
 
     /**
      * Constructor
@@ -27,16 +25,16 @@ class MainController {
         $this->dateTimeView = new view\DateTimeView();
 
         $this->session = new model\Session();
-        $this->server = new model\Server();
         $this->userLoginData = new model\userLoginData($this->loginView->getUserName(),
             $this->loginView->getPassword(), false);
+        $this->registerData = new model\RegisterData($this->registerView->getUserName(),
+            $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
 
         $this->login = new Login();
-        $this->register = new Register();
     }
 
     public function returnHTML(): string {
-        // var_dump($this->userLoginData->inputErrors());
+        //var_dump($this->registerData);
         $msg = '';
         $login = $this->login->isLoggedIn();
 
@@ -49,7 +47,11 @@ class MainController {
 
         if ($this->tryingToRegister()) {
             if ($this->isPost()) {
-                $msg = $this->register->checkInputErrors();
+                if ($this->registerData->inputErrors()) {
+                    $msg = $this->registerData->inputErrorMessage();
+                } else {
+                    $msg = 'Registered new user.';
+                }
             }
 
             $this->registerView->msg($msg);

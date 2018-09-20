@@ -3,32 +3,32 @@
 namespace model;
 
 class UserLoginData {
-    private static $userName;
-    private static $password;
-    private static $keepLogin;
+    private $userName;
+    private $password;
+    private $keepLogin;
 
     public function __construct($userName, $password, $keepLogin) {
-        self::$userName = $userName;
-        self::$password = $password;
-        self::$keepLogin = $keepLogin;
+        $this->userName = $userName;
+        $this->password = $password;
+        $this->keepLogin = $keepLogin;
     }
 
     public function username(): string {
-        return self::$userName;
+        return $this->userName;
     }
 
     public function password(): string {
-        return self::$password;
+        return $this->password;
     }
 
     public function inputErrors(): bool {
-        return !self::$password || !self::$userName;
+        return !$this->password || !$this->userName;
     }
 
     public function inputErrorMessage(): string {
-        if (!self::$userName) {
+        if (!$this->userName) {
             return 'Username is missing';
-        } else if (!self::$password) {
+        } else if (!$this->password) {
             return 'Password is missing';
         } else {
             throw new \Exception('Call inputErrors() before this function.');
