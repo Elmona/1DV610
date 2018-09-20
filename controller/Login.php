@@ -16,7 +16,4 @@ class Login {
         // $this->cookie->setCookie('login');
     }
 
-    public function logout(): void {
-        session_destroy();
-    }
 }

@@ -5,13 +5,14 @@ use model;
 use view;
 
 class MainController {
-    private $view;
+    private $loginView;
     private $registerView;
-    private $dtv;
-    private $lv;
+    private $dateTimeView;
+    private $layoutView;
 
     private $session;
     private $server;
+    private $userLoginData;
 
     private $login;
     private $register;
@@ -20,84 +21,72 @@ class MainController {
      * Constructor
      */
     public function __construct() {
-        $this->view = new view\LoginView();
+        $this->layoutView = new view\LayoutView();
+        $this->loginView = new view\LoginView();
         $this->registerView = new view\RegisterView();
-        $this->dtv = new view\DateTimeView();
-        $this->lv = new view\LayoutView();
+        $this->dateTimeView = new view\DateTimeView();
 
         $this->session = new model\Session();
         $this->server = new model\Server();
+        $this->userLoginData = new model\userLoginData($this->loginView->getUserName(),
+            $this->loginView->getPassword(), false);
 
         $this->login = new Login();
         $this->register = new Register();
     }
 
     public function returnHTML(): string {
+        // var_dump($this->userLoginData->inputErrors());
         $msg = '';
         $login = $this->login->isLoggedIn();
 
-        if ($this->tryingToLogout() && $login) {
-            $this->login->logout();
-            $this->view->message('Bye bye!');
-            return $this->lv->render(false, $this->view, $this->dtv);
-        } else if ($this->tryingToLogout() && !$login) {
-            return $this->lv->render(false, $this->view, $this->dtv);
+        if ($this->tryingToLogout()) {
+            $this->logout();
+            $this->loginView->message($login ? 'Bye bye!' : '');
+
+            return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
         }
 
         if ($this->tryingToRegister()) {
             if ($this->isPost()) {
                 $msg = $this->register->checkInputErrors();
             }
+
             $this->registerView->msg($msg);
-            return $this->lv->render(false, $this->registerView, $this->dtv);
+            return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
         }
 
         if ($this->isPost() && !$login) {
-            if ($this->tryingToLogin()) {
-                if ($this->login->
-                    testcredentials($this->view->getUserName(), $this->view->getPassword())) {
-                    $this->login->saveLogin();
+            if ($this->userLoginData->inputErrors()) {
+                $msg = $this->userLoginData->inputErrorMessage();
+            } else {
+                if ($this->login->testcredentials($this->userLoginData->username(), $this->userLoginData->password())) {
                     $login = true;
+                    $this->login->saveLogin();
                     $msg = 'Welcome';
                 } else {
                     $msg = 'Wrong name or password';
                 }
-            } else if ($this->tryingToLoginWithoutName()) {
-                $msg = 'Username is missing';
-            } else if ($this->tryingToLoginWithoutPassword()) {
-                $msg = 'Password is missing';
             }
         }
 
-        $this->view->message($msg);
-        return $this->lv->render($login, $this->view, $this->dtv);
+        $this->loginView->message($msg);
+        return $this->layoutView->render($login, $this->loginView, $this->dateTimeView);
     }
 
     private function tryingToRegister(): bool {
-        return $this->view->register();
+        return $this->loginView->register();
     }
 
     private function tryingToLogout(): bool {
-        return $this->view->getLogout();
+        return $this->loginView->getLogout();
     }
 
     private function isPost() {
-        return $this->view->isPost();
+        return $this->loginView->isPost();
     }
 
-    // private function tryingToLoginWithoutNameAndPassword(): bool {
-    //     return !$this->view->getUserName() && !$this->view->getPassword();
-    // }
-
-    private function tryingToLoginWithoutName(): bool {
-        return !$this->view->getUserName();
-    }
-
-    private function tryingToLoginWithoutPassword(): bool {
-        return $this->view->getUserName() && !$this->view->getPassword();
-    }
-
-    private function tryingToLogin(): bool {
-        return $this->view->getUserName() && $this->view->getPassword();
+    public function logout(): void {
+        session_destroy();
     }
 }
