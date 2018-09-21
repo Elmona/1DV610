@@ -19,7 +19,7 @@ class RegisterView extends FormView {
 					<p id="' . self::$messageId . '">' . $this->message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPost(self::$name) . '" /><br>
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . str_replace(array("<", ">"), "", $this->getPost(self::$name)) . '" /><br>
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" /><br>
