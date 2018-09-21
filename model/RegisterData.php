@@ -23,7 +23,7 @@ class RegisterData {
 
     public function inputErrors(): bool {
         return strlen($this->username) < 3 || strlen($this->password) < 6
-        || $this->password != $this->passwordRepeat;
+        || $this->password != $this->passwordRepeat || $this->username != strip_tags($this->username);
     }
 
     public function inputErrorMessage(): string {
@@ -43,6 +43,10 @@ class RegisterData {
 
         if (!$this->username && !$this->password && !$this->passwordRepeat) {
             $msg = 'Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.';
+        }
+
+        if ($this->username != strip_tags($this->username)) {
+            $msg = 'Username contains invalid characters.';
         }
 
         return $msg;
