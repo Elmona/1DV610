@@ -27,14 +27,24 @@ class RegisterData {
     }
 
     public function inputErrorMessage(): string {
-        if (strlen($this->username) < 3) {
-            return 'Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters';
-        } else if (strlen($this->password) < 6) {
-            return 'Password has too few characters, at least 6 characters.';
-        } else if ($this->password != $this->passwordRepeat) {
-            return 'Passwords do not match.';
-        } else {
-            throw new \Exception('Call inputErrors() before this function.');
+        $msg = '';
+
+        if ($this->password != $this->passwordRepeat) {
+            $msg = 'Passwords do not match.';
         }
+
+        if (strlen($this->password) < 6) {
+            $msg = 'Password has too few characters, at least 6 characters.';
+        }
+
+        if (strlen($this->username) < 3) {
+            $msg = 'Username has too few characters, at least 3 characters.';
+        }
+
+        if (!$this->username && !$this->password && !$this->passwordRepeat) {
+            $msg = 'Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.';
+        }
+
+        return $msg;
     }
 }
