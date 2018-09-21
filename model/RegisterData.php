@@ -22,7 +22,8 @@ class RegisterData {
     }
 
     public function inputErrors(): bool {
-        return strlen($this->username) < 3 || strlen($this->password) < 6
+        return strlen($this->username) < 3
+        || strlen($this->password) < 6
         || $this->password != $this->passwordRepeat
         || str_replace(array("<", ">"), "", $this->username) != $this->username;
     }
