@@ -10,10 +10,10 @@ class MainController {
     private $dateTimeView;
     private $layoutView;
 
-    private $session;
     private $userLoginData;
 
     private $login;
+    private $database;
 
     /**
      * Constructor
@@ -24,11 +24,11 @@ class MainController {
         $this->registerView = new view\RegisterView();
         $this->dateTimeView = new view\DateTimeView();
 
-        $this->session = new model\Session();
         $this->userLoginData = new model\userLoginData($this->loginView->getUserName(),
             $this->loginView->getPassword(), false);
         $this->registerData = new model\RegisterData($this->registerView->getUserName(),
             $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
+        $this->database = new model\Database();
 
         $this->login = new Login();
     }
@@ -50,7 +50,12 @@ class MainController {
                 if ($this->registerData->inputErrors()) {
                     $msg = $this->registerData->inputErrorMessage();
                 } else {
-                    $msg = 'Registered new user.';
+                    if ($this->database->registerNewUser($this->registerData)) {
+                        $this->loginView->message('Registered new user.');
+                        return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+                    } else {
+                        $msg = 'User exists, pick another username.';
+                    }
                 }
             }
 
@@ -62,7 +67,7 @@ class MainController {
             if ($this->userLoginData->inputErrors()) {
                 $msg = $this->userLoginData->inputErrorMessage();
             } else {
-                if ($this->login->testcredentials($this->userLoginData->username(), $this->userLoginData->password())) {
+                if ($this->database->testCredentials($this->userLoginData)) {
                     $login = true;
                     $this->login->saveLogin();
                     $msg = 'Welcome';

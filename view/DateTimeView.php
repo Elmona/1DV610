@@ -19,6 +19,7 @@ class DateTimeView {
         return "<p>${dayOfTheWeek}, the " . $this->ordinal($mday) . " of ${monthAsText} ${year}, The time is ${time}</p>";
     }
 
+    // Special php hack! ty for the snippet Martin Lindahl.
     private function ordinal($number) {
         $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
         if ((($number % 100) >= 11) && (($number % 100) <= 13)) {
