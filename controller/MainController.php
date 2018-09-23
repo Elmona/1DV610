@@ -69,7 +69,7 @@ class MainController {
             if ($this->userLoginData->inputErrors()) {
                 $msg = $this->userLoginData->inputErrorMessage();
             } else {
-                if ($this->login->testcredentials($this->userLoginData->username(), $this->userLoginData->password())) {
+                if ($this->database->testcredentials($this->userLoginData)) {
                     $login = true;
                     $this->login->saveLogin();
                     $msg = 'Welcome';
