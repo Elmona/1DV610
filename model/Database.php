@@ -58,7 +58,6 @@ class Database {
             prepare("SELECT name FROM `credentials` WHERE name=?");
 
         $stmt->bind_param("s", $username);
-        $stmt->bind_result($usernameFromDB);
         $stmt->execute();
 
         return $stmt->fetch() ? true : false;

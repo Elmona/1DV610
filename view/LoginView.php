@@ -12,6 +12,8 @@ class LoginView extends \view\FormView {
     private static $messageId = 'LoginView::Message';
 
     private $message = '';
+    private $newUsername = false;
+
     /**
      * Create HTTP response
      *
@@ -49,6 +51,13 @@ class LoginView extends \view\FormView {
      * @return  void, BUT writes to standard output!
      */
     private function generateLoginFormHTML($message) {
+        $name;
+        if ($this->newUsername) {
+            $name = $this->newUsername;
+        } else {
+            $name = $this->getPost(self::$name);
+        }
+
         return '
 			<form method="post" >
 				<fieldset>
@@ -56,7 +65,7 @@ class LoginView extends \view\FormView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPost(self::$name) . '" />
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $name . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -70,9 +79,14 @@ class LoginView extends \view\FormView {
 		';
     }
 
+    public function registeredUsername($username) {
+        $this->newUsername = $username;
+    }
+
     public function register() {
         return isset($_GET['register']);
     }
+
     public function getLogout() {
         return $this->getPost(self::$logout);
     }

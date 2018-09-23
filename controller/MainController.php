@@ -52,6 +52,8 @@ class MainController {
                 } else {
                     if ($this->database->registerNewUser($this->registerData)) {
                         $this->loginView->message('Registered new user.');
+                        $this->loginView->registeredUsername($this->registerData->username());
+
                         return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
                     } else {
                         $msg = 'User exists, pick another username.';
@@ -67,7 +69,7 @@ class MainController {
             if ($this->userLoginData->inputErrors()) {
                 $msg = $this->userLoginData->inputErrorMessage();
             } else {
-                if ($this->database->testCredentials($this->userLoginData)) {
+                if ($this->login->testcredentials($this->userLoginData->username(), $this->userLoginData->password())) {
                     $login = true;
                     $this->login->saveLogin();
                     $msg = 'Welcome';
