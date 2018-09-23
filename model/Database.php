@@ -11,55 +11,56 @@ class Database {
             $this->secrets->user, $this->secrets->password,
             $this->secrets->database, $this->secrets->port);
 
-        $this->createCredentialsTableIfNotExists();
+        $this->mysqli->query("CREATE TABLE IF NOT EXISTS `credentials`
+            ( `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `name` VARCHAR(100) NOT NULL , `password` VARCHAR(100) NOT NULL,
+            `cookie` VARCHAR(255) );");
     }
 
-    private function createCredentialsTableIfNotExists() {
-        $sql = "CREATE TABLE IF NOT EXISTS `credentials`
-        ( `id` INT AUTO_INCREMENT PRIMARY KEY,
-         `name` VARCHAR(100) NOT NULL , `password` VARCHAR(100) NOT NULL,
-         `cookie` VARCHAR(255) );";
-        return $this->mysqli->query($sql);
-    }
-
-    public function testCredentials(UserLoginData $user) {
+    public function testCredentials(UserLoginData $user): bool {
         $username = $user->username();
-        $stmt = $this->mysqli->prepare("SELECT (password) FROM `credentials` WHERE name=?");
-        $stmt->bind_param("s", $username);
-        $stmt->bind_result($hashedPassword);
-        $stmt->execute();
 
-        if ($stmt->fetch() && password_verify($user->password(), $hashedPassword)) {
+        $stmt = $this->mysqli->
+            prepare("SELECT name, password FROM `credentials` WHERE name=?");
+
+        $stmt->bind_param("s", $username);
+        $stmt->bind_result($userNameFromDB, $hashedPassword);
+        $stmt->execute();
+        $stmt->fetch();
+
+        if ($userNameFromDB === $username
+            && password_verify($user->password(), $hashedPassword)) {
+
             return true;
-        } else {
-            return false;
-        }
+
+        } else {return false;}
     }
 
-    public function registerNewUser(RegisterData $user) {
-        if ($this->checkIfUserAlreadyExist($user->username())) {
-            return false;
-        } else {
-            $stmt = $this->mysqli->prepare("INSERT INTO `credentials` (name, password) VALUES (?, ?)");
+    public function registerNewUser(RegisterData $user): bool {
+        if (!$this->checkIfUserNameAlreadyExist($user->username())) {
+            $stmt = $this->mysqli->
+                prepare("INSERT INTO `credentials` (name, password) VALUES (?, ?)");
 
-            $bcryptPassword = password_hash($user->password(), PASSWORD_BCRYPT, ["cost" => 10]);
+            $bcryptPassword = password_hash($user->password()
+                , PASSWORD_BCRYPT, ["cost" => 10]);
+
             $username = $user->username();
 
             $stmt->bind_param("ss", $username, $bcryptPassword);
             $stmt->execute();
 
             return true;
-        }
+        } else {return false;}
     }
 
-    private function checkIfUserAlreadyExist($username) {
-        $stmt = $this->mysqli->prepare("SELECT (name) FROM `credentials` WHERE name=?");
+    private function checkIfUserNameAlreadyExist($username): bool {
+        $stmt = $this->mysqli->
+            prepare("SELECT name FROM `credentials` WHERE name=?");
+
         $stmt->bind_param("s", $username);
+        $stmt->bind_result($usernameFromDB);
+        $stmt->execute();
 
-        if (!$stmt->execute()) {
-            throw new Exception('Error executing MySQL query: ' . $stmt->error);
-        }
-
-        return $stmt->fetch();
+        return $stmt->fetch() ? true : false;
     }
 }

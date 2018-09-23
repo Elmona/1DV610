@@ -21,5 +21,9 @@ ini_set('display_errors', $_ENV['display_errors']);
 date_default_timezone_set($_ENV['timezone']);
 session_start();
 
-$mc = new \controller\MainController();
-echo $mc->returnHTML();
+try {
+    $mc = new \controller\MainController();
+    echo $mc->returnHTML();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
