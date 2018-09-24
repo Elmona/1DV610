@@ -12,7 +12,7 @@ class MainController {
 
     private $userLoginData;
 
-    private $login;
+    private $loginController;
     private $database;
 
     /**
@@ -30,16 +30,28 @@ class MainController {
             $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
         $this->database = new model\Database();
 
-        $this->login = new Login();
+        $this->loginController = new \controller\LoginController($this->loginView, $this->database);
     }
 
     public function returnHTML(): string {
-        //var_dump($this->registerData);
+        // echo "<pre>" . var_dump(base64_encode(random_bytes(100)));substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 1).substr(md5(time()),1);
+        // die;
+
         $msg = '';
-        $login = $this->login->isLoggedIn();
+        $login = $this->loginController->isLoggedInBySession();
+
+        if ($this->loginController->cookiesExist() && !$login) {
+            if ($this->loginController->isLoggedInByCookie()) {
+                $this->loginView->message('Welcome back with cookie');
+                return $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
+            } else {
+                $this->loginView->message('Wrong information in cookies');
+                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+            }
+        }
 
         if ($this->tryingToLogout()) {
-            $this->logout();
+            $this->loginController->logout();
             $this->loginView->message($login ? 'Bye bye!' : '');
 
             return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
@@ -71,7 +83,7 @@ class MainController {
             } else {
                 if ($this->database->testcredentials($this->userLoginData)) {
                     $login = true;
-                    $this->login->saveLogin();
+                    $this->loginController->saveLogin($this->userLoginData);
                     $msg = 'Welcome';
                 } else {
                     $msg = 'Wrong name or password';
@@ -93,9 +105,5 @@ class MainController {
 
     private function isPost() {
         return $this->loginView->isPost();
-    }
-
-    public function logout(): void {
-        session_destroy();
     }
 }

@@ -3,8 +3,9 @@
 require_once 'model/Database.php';
 require_once 'model/UserLoginData.php';
 require_once 'model/RegisterData.php';
+require_once 'model/Cookie.php';
 
-require_once 'controller/Login.php';
+require_once 'controller/LoginController.php';
 require_once 'controller/MainController.php';
 
 require_once 'view/FormView.php';
