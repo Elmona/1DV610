@@ -13,6 +13,8 @@ class LoginController {
 
     private static $sessionName = 'sessionName';
     private static $sessionPassword = 'sessionPassword';
+    private static $sessionFingerprint = 'fingerprint';
+    private static $pepper = 'OzCJcRCZaYwNIHbmjhFf';
 
     public function __construct(\view\LoginView $loginView, \model\Database $database) {
         $this->cookie = new \model\Cookie();
@@ -33,7 +35,9 @@ class LoginController {
     }
 
     public function isLoggedInBySession(): bool {
-        return isset($_SESSION[self::$sessionName]);
+        return isset($_SESSION[self::$sessionFingerprint])
+        && $_SESSION[self::$sessionFingerprint] == md5($_SERVER['HTTP_USER_AGENT'] . self::$pepper);
+
     }
 
     public function saveLogin($userLoginData): void {
@@ -42,6 +46,7 @@ class LoginController {
 
         $_SESSION[self::$sessionName] = $userLoginData->username();
         $_SESSION[self::$sessionPassword] = $userLoginData->password();
+        $_SESSION[self::$sessionFingerprint] = md5($_SERVER['HTTP_USER_AGENT'] . self::$pepper);
 
         $this->cookie->setcookie(self::$cookieName, $userLoginData->username());
         $this->cookie->setcookie(self::$cookiePassword, $randomString);
