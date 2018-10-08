@@ -36,10 +36,10 @@ class MainController {
         if ($this->loginController->cookiesExist() && !$isLoggedIn) {
             if ($this->loginController->isLoggedInByCookie()) {
                 $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
-                $isLoggedIn = true;
+                return $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
             } else {
                 $this->loginView->message(\view\Messages::$wrongInformationInCookies);
-                $isLoggedIn = false;
+                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
             }
         }
 
