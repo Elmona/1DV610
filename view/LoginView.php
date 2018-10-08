@@ -83,7 +83,7 @@ class LoginView extends \view\FormView {
     }
 
     public function tryingToLogin() {
-        return $this->getPost(self::$login);
+        return $this->isPost() && $this->getPost(self::$login);
     }
 
     public function getUserName() {
