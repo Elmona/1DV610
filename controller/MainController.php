@@ -40,7 +40,7 @@ class MainController {
             }
         } else if ($this->loginController->cookiesExist() && !$isLoggedIn) {
             $isLoggedIn = $this->loginByCookie();
-        } else if ($this->loginView->tryingToLogin() && !$isLoggedIn) {
+        } else if ($this->loginView->tryingToLogin() && !$isLoggedIn && !$this->loginView->tryingToLogout()) {
             $isLoggedIn = $this->login();
         } else if ($this->loginView->tryingToLogout() && $isLoggedIn) {
             $isLoggedIn = $this->logout();
@@ -62,6 +62,7 @@ class MainController {
     private function logout() {
         $this->loginController->logout();
         $this->loginView->message(\view\Messages::$byeBye);
+
         return false;
     }
 
@@ -80,6 +81,7 @@ class MainController {
                 }
             }
         }
+
         return false;
     }
 
@@ -95,6 +97,7 @@ class MainController {
                 $this->loginView->message(\view\Messages::$wrongNameOrPassword);
             }
         }
+
         return false;
     }
 }
