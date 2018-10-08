@@ -31,59 +31,70 @@ class MainController {
 
     public function returnHTML(): string {
         $isLoggedIn = $this->loginController->isLoggedInBySession();
-        $msg = '';
-
-        if ($this->loginController->cookiesExist() && !$isLoggedIn) {
-            if ($this->loginController->isLoggedInByCookie()) {
-                $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
-                return $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
-            } else {
-                $this->loginView->message(\view\Messages::$wrongInformationInCookies);
-                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
-            }
-        }
-
-        if ($this->loginView->tryingToLogout()) {
-            $this->loginController->logout();
-            $this->loginView->message($isLoggedIn ? \view\Messages::$byeBye : '');
-            return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
-        }
 
         if ($this->loginView->tryingToRegister()) {
-            if ($this->loginView->isPost()) {
-                if ($this->registerData->inputErrors()) {
-                    $msg = $this->registerData->inputErrorMessage();
-                } else {
-                    if ($this->database->registerNewUser($this->registerData)) {
-                        $this->loginView->message(\view\Messages::$registeredNewUser);
-                        $this->loginView->registeredUsername($this->registerData->username());
-
-                        return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
-                    } else {
-                        $msg = \view\Messages::$userExists;
-                    }
-                }
-            }
-
-            $this->registerView->msg($msg);
-            return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
-        }
-
-        if ($this->loginView->isPost() && !$isLoggedIn) {
-            if ($this->userLoginData->inputErrors()) {
-                $msg = $this->userLoginData->inputErrorMessage();
+            if ($this->register()) {
+                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
             } else {
-                if ($this->database->testcredentials($this->userLoginData)) {
-                    $isLoggedIn = true;
-                    $this->loginController->saveLogin($this->userLoginData);
-                    $msg = \view\Messages::$welcome;
+                return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
+            }
+        } else if ($this->loginController->cookiesExist() && !$isLoggedIn) {
+            $isLoggedIn = $this->loginByCookie();
+        } else if ($this->loginView->tryingToLogout() && $isLoggedIn) {
+            $isLoggedIn = $this->logout();
+        } else if ($this->loginView->isPost() && !$isLoggedIn) {
+            $isLoggedIn = $this->login();
+        }
+
+        return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
+    }
+
+    private function loginByCookie() {
+        if ($this->loginController->isLoggedInByCookie()) {
+            $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
+            return true;
+        } else {
+            $this->loginView->message(\view\Messages::$wrongInformationInCookies);
+            return false;
+        }
+    }
+
+    private function logout() {
+        $this->loginController->logout();
+        $this->loginView->message(\view\Messages::$byeBye);
+        return false;
+    }
+
+    private function register() {
+        if ($this->loginView->isPost()) {
+            if ($this->registerData->inputErrors()) {
+                $this->registerView->msg($this->registerData->inputErrorMessage());
+            } else {
+                if ($this->database->registerNewUser($this->registerData)) {
+                    $this->loginView->message(\view\Messages::$registeredNewUser);
+                    $this->loginView->registeredUsername($this->registerData->username());
+
+                    return true;
                 } else {
-                    $msg = \view\Messages::$wrongNameOrPassword;
+                    $this->registerView->msg(\view\Messages::$userExists);
                 }
             }
         }
+        return false;
+    }
 
-        $this->loginView->message($msg);
-        return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
+    private function login() {
+        if ($this->userLoginData->inputErrors()) {
+            $this->loginView->message($this->userLoginData->inputErrorMessage());
+        } else {
+            if ($this->database->testcredentials($this->userLoginData)) {
+                $this->loginController->saveLogin($this->userLoginData);
+                $this->loginView->message(\view\Messages::$welcome);
+                return true;
+            } else {
+                $this->loginView->message(\view\Messages::$wrongNameOrPassword);
+            }
+        }
+        return false;
     }
 }
