@@ -40,10 +40,10 @@ class MainController {
             }
         } else if ($this->loginController->cookiesExist() && !$isLoggedIn) {
             $isLoggedIn = $this->loginByCookie();
+        } else if ($this->loginView->tryingToLogin() && !$isLoggedIn) {
+            $isLoggedIn = $this->login();
         } else if ($this->loginView->tryingToLogout() && $isLoggedIn) {
             $isLoggedIn = $this->logout();
-        } else if ($this->loginView->isPost() && !$isLoggedIn) {
-            $isLoggedIn = $this->login();
         }
 
         return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
