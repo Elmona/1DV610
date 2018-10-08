@@ -74,11 +74,11 @@ class LoginView extends \view\FormView {
         $this->newUsername = $username;
     }
 
-    public function register() {
+    public function tryingToRegister() {
         return isset($_GET['register']);
     }
 
-    public function getLogout() {
+    public function tryingToLogout() {
         return $this->getPost(self::$logout);
     }
 

@@ -36,21 +36,21 @@ class MainController {
         if ($this->loginController->cookiesExist() && !$isLoggedIn) {
             if ($this->loginController->isLoggedInByCookie()) {
                 $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
-                $isLoggedIn = true;
+                return $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
             } else {
                 $this->loginView->message(\view\Messages::$wrongInformationInCookies);
-                $isLoggedIn = false;
+                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
             }
         }
 
-        if ($this->tryingToLogout()) {
+        if ($this->loginView->tryingToLogout()) {
             $this->loginController->logout();
             $this->loginView->message($isLoggedIn ? \view\Messages::$byeBye : '');
             return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
         }
 
-        if ($this->tryingToRegister()) {
-            if ($this->isPost()) {
+        if ($this->loginView->tryingToRegister()) {
+            if ($this->loginView->isPost()) {
                 if ($this->registerData->inputErrors()) {
                     $msg = $this->registerData->inputErrorMessage();
                 } else {
@@ -69,7 +69,7 @@ class MainController {
             return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
         }
 
-        if ($this->isPost() && !$isLoggedIn) {
+        if ($this->loginView->isPost() && !$isLoggedIn) {
             if ($this->userLoginData->inputErrors()) {
                 $msg = $this->userLoginData->inputErrorMessage();
             } else {
@@ -85,17 +85,5 @@ class MainController {
 
         $this->loginView->message($msg);
         return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
-    }
-
-    private function tryingToRegister(): bool {
-        return $this->loginView->register();
-    }
-
-    private function tryingToLogout(): bool {
-        return $this->loginView->getLogout();
-    }
-
-    private function isPost() {
-        return $this->loginView->isPost();
     }
 }
