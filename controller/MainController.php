@@ -1,9 +1,6 @@
 <?php
 namespace controller;
 
-use model;
-use view;
-
 class MainController {
     private $loginView;
     private $registerView;
@@ -15,45 +12,40 @@ class MainController {
     private $loginController;
     private $database;
 
-    /**
-     * Constructor
-     */
     public function __construct() {
-        $this->layoutView = new view\LayoutView();
-        $this->loginView = new view\LoginView();
-        $this->registerView = new view\RegisterView();
-        $this->dateTimeView = new view\DateTimeView();
+        $this->layoutView = new \view\LayoutView();
+        $this->loginView = new \view\LoginView();
+        $this->registerView = new \view\RegisterView();
+        $this->dateTimeView = new \view\DateTimeView();
 
-        $this->userLoginData = new model\userLoginData($this->loginView->getUserName(),
+        $this->userLoginData = new \model\userLoginData($this->loginView->getUserName(),
             $this->loginView->getPassword(), false);
-        $this->registerData = new model\RegisterData($this->registerView->getUserName(),
+
+        $this->registerData = new \model\RegisterData($this->registerView->getUserName(),
             $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
-        $this->database = new model\Database();
+
+        $this->database = new \model\Database();
 
         $this->loginController = new \controller\LoginController($this->loginView, $this->database);
     }
 
     public function returnHTML(): string {
-        // echo "<pre>" . var_dump(base64_encode(random_bytes(100)));substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 1).substr(md5(time()),1);
-        // die;
-
+        $isLoggedIn = $this->loginController->isLoggedInBySession();
         $msg = '';
-        $login = $this->loginController->isLoggedInBySession();
 
-        if ($this->loginController->cookiesExist() && !$login) {
+        if ($this->loginController->cookiesExist() && !$isLoggedIn) {
             if ($this->loginController->isLoggedInByCookie()) {
-                $this->loginView->message('Welcome back with cookie');
-                return $this->layoutView->render(true, $this->loginView, $this->dateTimeView);
+                $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
+                $isLoggedIn = true;
             } else {
-                $this->loginView->message('Wrong information in cookies');
-                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+                $this->loginView->message(\view\Messages::$wrongInformationInCookies);
+                $isLoggedIn = false;
             }
         }
 
         if ($this->tryingToLogout()) {
             $this->loginController->logout();
-            $this->loginView->message($login ? 'Bye bye!' : '');
-
+            $this->loginView->message($isLoggedIn ? \view\Messages::$byeBye : '');
             return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
         }
 
@@ -63,12 +55,12 @@ class MainController {
                     $msg = $this->registerData->inputErrorMessage();
                 } else {
                     if ($this->database->registerNewUser($this->registerData)) {
-                        $this->loginView->message('Registered new user.');
+                        $this->loginView->message(\view\Messages::$registeredNewUser);
                         $this->loginView->registeredUsername($this->registerData->username());
 
                         return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
                     } else {
-                        $msg = 'User exists, pick another username.';
+                        $msg = \view\Messages::$userExists;
                     }
                 }
             }
@@ -77,22 +69,22 @@ class MainController {
             return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
         }
 
-        if ($this->isPost() && !$login) {
+        if ($this->isPost() && !$isLoggedIn) {
             if ($this->userLoginData->inputErrors()) {
                 $msg = $this->userLoginData->inputErrorMessage();
             } else {
                 if ($this->database->testcredentials($this->userLoginData)) {
-                    $login = true;
+                    $isLoggedIn = true;
                     $this->loginController->saveLogin($this->userLoginData);
-                    $msg = 'Welcome';
+                    $msg = \view\Messages::$welcome;
                 } else {
-                    $msg = 'Wrong name or password';
+                    $msg = \view\Messages::$wrongNameOrPassword;
                 }
             }
         }
 
         $this->loginView->message($msg);
-        return $this->layoutView->render($login, $this->loginView, $this->dateTimeView);
+        return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
     }
 
     private function tryingToRegister(): bool {

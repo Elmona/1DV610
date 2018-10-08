@@ -14,13 +14,6 @@ class LoginView extends \view\FormView {
     private $message = '';
     private $newUsername = false;
 
-    /**
-     * Create HTTP response
-     *
-     * Should be called after a login attempt has been determined
-     *
-     * @return  void BUT writes to standard output and cookies!
-     */
     public function response($isLoggedIn) {
         if ($isLoggedIn) {
             $response = $this->generateLogoutButtonHTML($this->message);
@@ -31,11 +24,6 @@ class LoginView extends \view\FormView {
         return $response;
     }
 
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  void, BUT writes to standard output!
-     */
     private function generateLogoutButtonHTML($message) {
         return '
 			<form  method="post" >
@@ -45,11 +33,6 @@ class LoginView extends \view\FormView {
 		';
     }
 
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  void, BUT writes to standard output!
-     */
     private function generateLoginFormHTML($message) {
         $name;
         if ($this->newUsername) {
@@ -110,12 +93,7 @@ class LoginView extends \view\FormView {
     public function message($msg) {
         $this->message = $msg;
     }
-    /**
-     * Check if global variable is set and return it.
-     *
-     * @param [string] $name
-     * @return string
-     */
+
     private function getPost($name) {
         if (isset($_POST[$name]) && !empty($_POST[$name])) {
             return $_POST[$name];
@@ -124,12 +102,11 @@ class LoginView extends \view\FormView {
         }
     }
 
-    /**
-     * Check if server REQUEST_METHOD is post
-     *
-     * @return boolean
-     */
     public function isPost() {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
+    }
+
+    public function getUserAgent() {
+        return $_SERVER['HTTP_USER_AGENT'];
     }
 }
