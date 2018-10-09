@@ -2,6 +2,7 @@
 
 $_ENV['display_errors'] = 'Off';
 $_ENV['timezone'] = 'Europe/Stockholm';
+$_ENV['pepper'] = 'SuperSecretPepper';
 
 class Config {
     public $host = 'mysql';
