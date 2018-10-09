@@ -9,4 +9,12 @@ class Cookie {
     public function removeCookie($name) {
         \setcookie($name, null, time() - 3600);
     }
+
+    public function cookieExist($name) {
+        return isset($_COOKIE[$name]);
+    }
+
+    public function getCookie($name) {
+        return $_COOKIE[$name];
+    }
 }
