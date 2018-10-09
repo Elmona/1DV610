@@ -7,8 +7,6 @@ class MainController {
     private $dateTimeView;
     private $layoutView;
 
-    private $userLoginData;
-
     private $loginController;
     private $database;
 
@@ -17,12 +15,6 @@ class MainController {
         $this->loginView = new \view\LoginView();
         $this->registerView = new \view\RegisterView();
         $this->dateTimeView = new \view\DateTimeView();
-
-        $this->userLoginData = new \model\userLoginData($this->loginView->getUserName(),
-            $this->loginView->getPassword(), false);
-
-        $this->registerData = new \model\RegisterData($this->registerView->getUserName(),
-            $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
 
         $this->database = new \model\Database();
 
@@ -40,7 +32,7 @@ class MainController {
             }
         } else if ($this->loginController->cookiesExist() && !$isLoggedIn) {
             $isLoggedIn = $this->loginByCookie();
-        } else if ($this->loginView->tryingToLogin() && !$isLoggedIn && !$this->loginView->tryingToLogout()) {
+        } else if ($this->loginView->tryingToLogin() && !$isLoggedIn) {
             $isLoggedIn = $this->login();
         } else if ($this->loginView->tryingToLogout() && $isLoggedIn) {
             $isLoggedIn = $this->logout();
@@ -49,7 +41,7 @@ class MainController {
         return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
     }
 
-    private function loginByCookie() {
+    private function loginByCookie(): bool {
         if ($this->loginController->isLoggedInByCookie()) {
             $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
             return true;
@@ -59,45 +51,50 @@ class MainController {
         }
     }
 
-    private function logout() {
+    private function logout(): bool {
         $this->loginController->logout();
         $this->loginView->message(\view\Messages::$byeBye);
 
         return false;
     }
 
-    private function register() {
-        if ($this->loginView->isPost()) {
-            if ($this->registerData->inputErrors()) {
-                $this->registerView->msg($this->registerData->inputErrorMessage());
-            } else {
-                if ($this->database->registerNewUser($this->registerData)) {
+    private function register(): bool {
+        try {
+            if ($this->loginView->isPost()) {
+                $registerData = new \model\RegisterData($this->registerView->getUserName(),
+                    $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
+
+                if ($this->database->registerNewUser($registerData)) {
                     $this->loginView->message(\view\Messages::$registeredNewUser);
-                    $this->loginView->registeredUsername($this->registerData->username());
+                    $this->loginView->registeredUsername($registerData->username());
 
                     return true;
                 } else {
                     $this->registerView->msg(\view\Messages::$userExists);
                 }
             }
+        } catch (\Exception $e) {
+            $this->registerView->msg($e->getMessage());
         }
 
         return false;
     }
 
-    private function login() {
-        if ($this->userLoginData->inputErrors()) {
-            $this->loginView->message($this->userLoginData->inputErrorMessage());
-        } else {
-            if ($this->database->testcredentials($this->userLoginData)) {
-                $this->loginController->saveLogin($this->userLoginData);
+    private function login(): bool {
+        try {
+            $userLoginData = new \model\UserLoginData($this->loginView->getUserName(),
+                $this->loginView->getPassword(), false);
+
+            if ($this->database->testcredentials($userLoginData)) {
+                $this->loginController->saveLogin($userLoginData);
                 $this->loginView->message(\view\Messages::$welcome);
                 return true;
             } else {
                 $this->loginView->message(\view\Messages::$wrongNameOrPassword);
             }
+        } catch (\Exception $e) {
+            $this->loginView->message($e->getMessage());
+            return false;
         }
-
-        return false;
     }
 }

@@ -8,6 +8,14 @@ class UserLoginData {
     private $keepLogin;
 
     public function __construct($userName, $password, $keepLogin) {
+        if (!$userName) {
+            throw new \Exception('Username is missing');
+        }
+
+        if (!$password) {
+            throw new \Exception('Password is missing');
+        }
+
         $this->userName = $userName;
         $this->password = $password;
         $this->keepLogin = $keepLogin;
@@ -19,19 +27,5 @@ class UserLoginData {
 
     public function password(): string {
         return $this->password;
-    }
-
-    public function inputErrors(): bool {
-        return !$this->password || !$this->userName;
-    }
-
-    public function inputErrorMessage(): string {
-        if (!$this->userName) {
-            return 'Username is missing';
-        } else if (!$this->password) {
-            return 'Password is missing';
-        } else {
-            throw new \Exception('Call inputErrors() before this function.');
-        }
     }
 }
