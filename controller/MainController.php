@@ -41,23 +41,6 @@ class MainController {
         return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
     }
 
-    private function loginByCookie(): bool {
-        if ($this->loginController->isLoggedInByCookie()) {
-            $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
-            return true;
-        } else {
-            $this->loginView->message(\view\Messages::$wrongInformationInCookies);
-            return false;
-        }
-    }
-
-    private function logout(): bool {
-        $this->loginController->logout();
-        $this->loginView->message(\view\Messages::$byeBye);
-
-        return false;
-    }
-
     private function register(): bool {
         try {
             if ($this->loginView->isPost()) {
@@ -80,6 +63,16 @@ class MainController {
         return false;
     }
 
+    private function loginByCookie(): bool {
+        if ($this->loginController->isLoggedInByCookie()) {
+            $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
+            return true;
+        } else {
+            $this->loginView->message(\view\Messages::$wrongInformationInCookies);
+            return false;
+        }
+    }
+
     private function login(): bool {
         try {
             $userLoginData = new \model\UserLoginData($this->loginView->getUserName(),
@@ -95,6 +88,13 @@ class MainController {
         } catch (\Exception $e) {
             $this->loginView->message($e->getMessage());
         }
+
+        return false;
+    }
+
+    private function logout(): bool {
+        $this->loginController->logout();
+        $this->loginView->message(\view\Messages::$byeBye);
 
         return false;
     }
