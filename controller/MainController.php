@@ -94,7 +94,8 @@ class MainController {
             }
         } catch (\Exception $e) {
             $this->loginView->message($e->getMessage());
-            return false;
         }
+
+        return false;
     }
 }
