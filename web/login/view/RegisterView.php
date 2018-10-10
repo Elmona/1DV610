@@ -45,12 +45,6 @@ class RegisterView extends FormView {
         return $this->getPost(self::$passwordRepeat);
     }
 
-    /**
-     * Check if global variable is set and return it.
-     *
-     * @param [string] $name
-     * @return string
-     */
     private function getPost($name) {
         if (isset($_POST[$name]) && !empty($_POST[$name])) {
             return $_POST[$name];
@@ -58,6 +52,7 @@ class RegisterView extends FormView {
             return false;
         }
     }
+
     public function msg($msg) {
         $this->message = $msg;
     }

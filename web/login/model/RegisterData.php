@@ -8,6 +8,32 @@ class RegisterData {
     private $passwordRepeat;
 
     public function __construct($username, $password, $passwordRepeat) {
+        $msg = '';
+
+        if ($password != $passwordRepeat) {
+            $msg = 'Passwords do not match.';
+        }
+
+        if (strlen($password) < 6) {
+            $msg = 'Password has too few characters, at least 6 characters.';
+        }
+
+        if (strlen($username) < 3) {
+            $msg = 'Username has too few characters, at least 3 characters.';
+        }
+
+        if (!$username && !$password && !$passwordRepeat) {
+            $msg = 'Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.';
+        }
+
+        if ($username != str_replace(array("<", ">"), "", $username)) {
+            $msg = 'Username contains invalid characters.';
+        }
+
+        if (strlen($msg) > 0) {
+            throw new \Exception($msg);
+        }
+
         $this->username = $username;
         $this->password = $password;
         $this->passwordRepeat = $passwordRepeat;
@@ -19,38 +45,5 @@ class RegisterData {
 
     public function password(): string {
         return $this->password;
-    }
-
-    public function inputErrors(): bool {
-        return strlen($this->username) < 3
-        || strlen($this->password) < 6
-        || $this->password != $this->passwordRepeat
-        || str_replace(array("<", ">"), "", $this->username) != $this->username;
-    }
-
-    public function inputErrorMessage(): string {
-        $msg = '';
-
-        if ($this->password != $this->passwordRepeat) {
-            $msg = 'Passwords do not match.';
-        }
-
-        if (strlen($this->password) < 6) {
-            $msg = 'Password has too few characters, at least 6 characters.';
-        }
-
-        if (strlen($this->username) < 3) {
-            $msg = 'Username has too few characters, at least 3 characters.';
-        }
-
-        if (!$this->username && !$this->password && !$this->passwordRepeat) {
-            $msg = 'Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.';
-        }
-
-        if ($this->username != str_replace(array("<", ">"), "", $this->username)) {
-            $msg = 'Username contains invalid characters.';
-        }
-
-        return $msg;
     }
 }
