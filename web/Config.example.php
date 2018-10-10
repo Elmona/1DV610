@@ -2,9 +2,10 @@
 
 $_ENV['display_errors'] = 'Off';
 $_ENV['timezone'] = 'Europe/Stockholm';
+$_ENV['pepper'] = 'mySecret';
 
 class Config {
-    public $host = 'mysql';
+    public $host = 'mysqlDB';
     public $user = 'dev';
     public $password = 'dev';
     public $database = 'test';

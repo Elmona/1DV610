@@ -15,7 +15,7 @@ require_once 'view/DateTimeView.php';
 require_once 'view/LayoutView.php';
 
 // I strongly advise you to change values in this file.
-require_once 'Config.php';
+require_once '../Config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', $_ENV['display_errors']);
