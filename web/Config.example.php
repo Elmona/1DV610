@@ -5,7 +5,7 @@ $_ENV['timezone'] = 'Europe/Stockholm';
 $_ENV['pepper'] = 'SuperSecretPepper';
 
 class Config {
-    public $host = 'mysql';
+    public $host = 'mysqlDB';
     public $user = 'dev';
     public $password = 'dev';
     public $database = 'test';
