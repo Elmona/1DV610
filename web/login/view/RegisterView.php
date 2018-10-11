@@ -53,7 +53,7 @@ class RegisterView extends FormView {
         }
     }
 
-    public function msg($msg) {
+    public function message($msg) {
         $this->message = $msg;
     }
 }

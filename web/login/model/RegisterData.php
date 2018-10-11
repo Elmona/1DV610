@@ -11,23 +11,23 @@ class RegisterData {
         $msg = '';
 
         if ($password != $passwordRepeat) {
-            $msg = 'Passwords do not match.';
+            $msg = 'passwordDontMatch';
         }
 
         if (strlen($password) < 6) {
-            $msg = 'Password has too few characters, at least 6 characters.';
+            $msg = 'shortPassword';
         }
 
         if (strlen($username) < 3) {
-            $msg = 'Username has too few characters, at least 3 characters.';
+            $msg = 'shortUsername';
         }
 
         if (!$username && !$password && !$passwordRepeat) {
-            $msg = 'Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.';
+            $msg = 'shortUsernameAndPassword';
         }
 
         if ($username != str_replace(array("<", ">"), "", $username)) {
-            $msg = 'Username contains invalid characters.';
+            $msg = 'invalidChars';
         }
 
         if (strlen($msg) > 0) {

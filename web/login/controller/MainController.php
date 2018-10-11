@@ -53,11 +53,30 @@ class MainController {
 
                     return true;
                 } else {
-                    $this->registerView->msg(\view\Messages::$userExists);
+                    $this->registerView->message(\view\Messages::$userExists);
                 }
             }
         } catch (\Exception $e) {
-            $this->registerView->msg($e->getMessage());
+            switch ($e->getMessage()) {
+                case 'passwordDontMatch':
+                    $this->registerView->message(\view\Messages::$passwordDontMatch);
+                    break;
+                case 'shortPassword':
+                    $this->registerView->message(\view\Messages::$shortPassword);
+                    break;
+                case 'shortUsername':
+                    $this->registerView->message(\view\Messages::$shortUsername);
+                    break;
+                case 'shortUsernameAndPassword':
+                    $this->registerView->message(\view\Messages::$shortUsernameAndPassword);
+                    break;
+                case 'invalidChars':
+                    $this->registerView->message(\view\Messages::$invalidChars);
+                    break;
+                default:
+                    $this->registerView->message(\view\Messages::$unknownError);
+                    break;
+            }
         }
 
         return false;
@@ -86,7 +105,17 @@ class MainController {
                 $this->loginView->message(\view\Messages::$wrongNameOrPassword);
             }
         } catch (\Exception $e) {
-            $this->loginView->message($e->getMessage());
+            switch ($e->getMessage()) {
+                case 'Username is missing':
+                    $this->loginView->message(\view\Messages::$usernameMissing);
+                    break;
+                case 'Password is missing':
+                    $this->loginView->message(\view\Messages::$passwordMissing);
+                    break;
+                default:
+                    $this->loginView->message(\view\Messages::$unknownError);
+                    break;
+            }
         }
 
         return false;
