@@ -13,8 +13,8 @@ class Messages {
     public static $usernameMissing = "Username is missing";
     public static $passwordMissing = "Password is missing";
 
-    public static $passwordDontMatch = "Password do not match.";
-    public static $shortPassword = "Password has to few characters, at least 6 characters.";
+    public static $passwordDontMatch = "Passwords do not match.";
+    public static $shortPassword = "Password has too few characters, at least 6 characters.";
     public static $shortUsername = "Username has too few characters, at least 3 characters.";
     public static $shortUsernameAndPassword = "Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.";
     public static $invalidChars = "Username contains invalid characters.";
