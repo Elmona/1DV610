@@ -84,6 +84,7 @@ class MainController {
 
     private function loginByCookie(): bool {
         if ($this->loginController->isLoggedInByCookie()) {
+            $this->loginController->saveLoginByCookie();
             $this->loginView->message(\view\Messages::$welcomeBackWithCookie);
             return true;
         } else {

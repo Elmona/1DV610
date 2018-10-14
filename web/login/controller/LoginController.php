@@ -35,6 +35,18 @@ class LoginController {
             , $this->cookie->getCookie(self::$cookiePassword), self::$userAgent);
     }
 
+    public function saveLoginByCookie(): void {
+        $randomString = $this->generateRandomString();
+
+        $this->session->saveSessionName($this->cookie->getCookie(self::$cookieName));
+        $this->session->saveSessionFingerprint(self::$userAgent);
+        $this->cookie->setcookie(self::$cookiePassword, $randomString);
+
+        $this->database->
+            updateCookieAndUserAgent($this->cookie->getCookie(self::$cookieName),
+            $randomString, self::$userAgent);
+    }
+
     public function isLoggedInBySession(): bool {
         return $this->session->isLoggedInBySession(self::$userAgent);
     }
