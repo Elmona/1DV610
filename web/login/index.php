@@ -16,6 +16,8 @@ require_once 'view/DateTimeView.php';
 require_once 'view/LayoutView.php';
 require_once 'view/Messages.php';
 
+require_once '../textSave/index.php';
+
 // I strongly advise you to change values in this file.
 require_once '../Config.php';
 

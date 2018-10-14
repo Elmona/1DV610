@@ -18,9 +18,18 @@ class LayoutView {
               ' . $v->response($isLoggedIn) . '
               ' . $dtv->show() . '
           </div>
+          ' . $this->textSave($isLoggedIn) . '
          </body>
       </html>
     ';
+    }
+
+    private function textSave($isLoggedIn) {
+        if ($isLoggedIn) {
+            $session = new \model\Session();
+            $textSave = new \TextSave\TextSave($session->getSessionName());
+            return $textSave->returnHTML();
+        }
     }
 
     private function register() {

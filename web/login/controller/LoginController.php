@@ -43,7 +43,6 @@ class LoginController {
         $randomString = $this->generateRandomString();
 
         $this->session->saveSessionName($userLoginData->username());
-        $this->session->saveSessionPassword($userLoginData->password());
         $this->session->saveSessionFingerprint(self::$userAgent);
 
         $this->cookie->setcookie(self::$cookieName, $userLoginData->username());

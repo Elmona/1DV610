@@ -28,6 +28,10 @@ class Session {
         $_SESSION[self::$sessionFingerprint] = md5($userAgent . self::$pepper);
     }
 
+    public function getSessionName(): string {
+        return $_SESSION[self::$sessionName];
+    }
+
     public function destroySession() {
         session_destroy();
     }
