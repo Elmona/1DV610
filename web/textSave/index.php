@@ -11,7 +11,6 @@ class TextSave {
 
     public function __construct(string $username) {
         $this->mainController = new \textSaveController\MainController($username);
-
     }
 
     public function returnHTML() {

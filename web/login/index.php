@@ -17,19 +17,9 @@ require_once 'view/DateTimeView.php';
 require_once 'view/LayoutView.php';
 require_once 'view/Messages.php';
 
-require_once '../textSave/index.php';
-
-// I strongly advise you to change values in this file.
-require_once '../Config.php';
-
-error_reporting(E_ALL);
-ini_set('display_errors', $_ENV['display_errors']);
-date_default_timezone_set($_ENV['timezone']);
-session_start();
-
-try {
-    $mc = new \controller\MainController();
-    echo $mc->returnHTML();
-} catch (Exception $e) {
-    echo $e->getMessage();
+class Login {
+    public function returnHTML() {
+        $mc = new \controller\MainController();
+        return $mc->returnHTML();
+    }
 }
