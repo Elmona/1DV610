@@ -2,19 +2,19 @@
 namespace model;
 
 class Cookie {
-    public function setCookie($name, $value) {
+    public function setCookie($name, $value): void {
         \setcookie($name, $value, time() + 3600);
     }
 
-    public function removeCookie($name) {
+    public function removeCookie($name): void {
         \setcookie($name, null, time() - 3600);
     }
 
-    public function cookieExist($name) {
+    public function cookieExist($name): bool {
         return isset($_COOKIE[$name]);
     }
 
-    public function getCookie($name) {
+    public function getCookie($name): string {
         return $_COOKIE[$name];
     }
 }

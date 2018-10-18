@@ -10,7 +10,7 @@ class RegisterView extends FormView {
 
     private $message = '';
 
-    public function response($isLoggedin) {
+    public function response($isLoggedin): string {
         return '<h2>Register a new user</h2>
 			<form method="post" >
 				<fieldset>
@@ -33,15 +33,15 @@ class RegisterView extends FormView {
         ';
     }
 
-    public function getUserName() {
+    public function getUserName(): string {
         return $this->getPost(self::$name);
     }
 
-    public function getPassword() {
+    public function getPassword(): string {
         return $this->getPost(self::$password);
     }
 
-    public function getPasswordRepeat() {
+    public function getPasswordRepeat(): string {
         return $this->getPost(self::$passwordRepeat);
     }
 
@@ -53,7 +53,7 @@ class RegisterView extends FormView {
         }
     }
 
-    public function message($msg) {
+    public function message($msg): void {
         $this->message = $msg;
     }
 }

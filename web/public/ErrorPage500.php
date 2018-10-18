@@ -1,7 +1,7 @@
 <?php
 
 class ErrorPage500 {
-    public function returnHTML() {
+    public function returnHTML(): string {
         return "
         <!DOCTYPE html>
         <html>

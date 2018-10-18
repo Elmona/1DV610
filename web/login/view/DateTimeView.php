@@ -20,7 +20,7 @@ class DateTimeView {
     }
 
     // Special php hack! ty for the snippet Martin Lindahl.
-    private function ordinal($number) {
+    private function ordinal($number): string {
         $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
         if ((($number % 100) >= 11) && (($number % 100) <= 13)) {
             return $number . 'th';

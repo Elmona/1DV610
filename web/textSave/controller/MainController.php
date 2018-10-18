@@ -13,7 +13,7 @@ class MainController {
         $this->database = new \textSaveModel\Database();
     }
 
-    public function returnHTML() {
+    public function returnHTML(): string {
         if ($this->layoutView->isSaving()) {
             $this->database->
                 saveText($this->username, $this->layoutView->getText());

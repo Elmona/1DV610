@@ -8,7 +8,7 @@ class LayoutView {
     private $message;
     private $text;
 
-    public function returnHTML() {
+    public function returnHTML(): string {
         return '
         <div>
             ' . $this->message . '
@@ -21,7 +21,7 @@ class LayoutView {
         ';
     }
 
-    public function messageSaved() {
+    public function messageSaved(): void {
         $this->message = '<p>Saved your data.</p>';
     }
 
@@ -33,7 +33,7 @@ class LayoutView {
         return $_POST[$this->data];
     }
 
-    public function setData(String $text) {
+    public function setData(String $text): void {
         $this->text = $text;
     }
 }

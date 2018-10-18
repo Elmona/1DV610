@@ -16,15 +16,15 @@ class Session {
         && $_SESSION[self::$sessionFingerprint] == md5($userAgent . self::$pepper);
     }
 
-    public function saveSessionName($name) {
+    public function saveSessionName($name): void {
         $_SESSION[self::$sessionName] = $name;
     }
 
-    public function saveSessionPassword($name) {
+    public function saveSessionPassword($name): void {
         $_SESSION[self::$sessionPassword] = $name;
     }
 
-    public function saveSessionFingerprint($userAgent) {
+    public function saveSessionFingerprint($userAgent): void {
         $_SESSION[self::$sessionFingerprint] = md5($userAgent . self::$pepper);
     }
 
@@ -32,7 +32,7 @@ class Session {
         return $_SESSION[self::$sessionName];
     }
 
-    public function destroySession() {
+    public function destroySession(): void {
         session_destroy();
     }
 }

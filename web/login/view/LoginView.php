@@ -14,7 +14,7 @@ class LoginView extends \view\FormView {
     private $message = '';
     private $newUsername = false;
 
-    public function response($isLoggedIn) {
+    public function response($isLoggedIn): string {
         if ($isLoggedIn) {
             $response = $this->generateLogoutButtonHTML($this->message);
         } else {
@@ -24,7 +24,7 @@ class LoginView extends \view\FormView {
         return $response;
     }
 
-    private function generateLogoutButtonHTML($message) {
+    private function generateLogoutButtonHTML($message): string {
         return '
 			<form  method="post" >
 				<p id="' . self::$messageId . '">' . $message . '</p>
@@ -33,7 +33,7 @@ class LoginView extends \view\FormView {
 		';
     }
 
-    private function generateLoginFormHTML($message) {
+    private function generateLoginFormHTML($message): string {
         $name;
         if ($this->newUsername) {
             $name = $this->newUsername;
@@ -62,39 +62,39 @@ class LoginView extends \view\FormView {
 		';
     }
 
-    public function getCookieName() {
+    public function getCookieName(): string {
         return self::$cookieName;
     }
 
-    public function getCookiePassword() {
+    public function getCookiePassword(): string {
         return self::$cookiePassword;
     }
 
-    public function registeredUsername($username) {
+    public function registeredUsername($username): string {
         $this->newUsername = $username;
     }
 
-    public function tryingToRegister() {
+    public function tryingToRegister(): bool {
         return isset($_GET['register']);
     }
 
-    public function tryingToLogout() {
+    public function tryingToLogout(): string {
         return $this->getPost(self::$logout);
     }
 
-    public function tryingToLogin() {
+    public function tryingToLogin(): bool {
         return $this->isPost() && !$this->tryingToLogout();
     }
 
-    public function getUserName() {
+    public function getUserName(): string {
         return $this->getPost(self::$name);
     }
 
-    public function getPassword() {
+    public function getPassword(): string {
         return $this->getPost(self::$password);
     }
 
-    public function message($msg) {
+    public function message($msg): void {
         $this->message = $msg;
     }
 
@@ -106,11 +106,11 @@ class LoginView extends \view\FormView {
         }
     }
 
-    public function isPost() {
+    public function isPost(): bool {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function getUserAgent() {
+    public function getUserAgent(): string {
         return $_SERVER['HTTP_USER_AGENT'];
     }
 }

@@ -18,7 +18,7 @@ require_once 'view/LayoutView.php';
 require_once 'view/Messages.php';
 
 class Login {
-    public function returnHTML() {
+    public function returnHTML(): string {
         $mc = new \controller\MainController();
         return $mc->returnHTML();
     }

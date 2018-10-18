@@ -16,7 +16,7 @@ class Database {
             `text` TEXT, PRIMARY KEY (name));");
     }
 
-    public function getText(String $username): String {
+    public function getText(String $username): string {
         $stmt = $this->mysqli->
             prepare("SELECT text FROM `text` WHERE name=?");
 
@@ -29,7 +29,7 @@ class Database {
         return strlen($data) > 0 ? $data : '';
     }
 
-    public function saveText(String $username, String $data) {
+    public function saveText(String $username, String $data): void {
         $stmt = $this->mysqli->
             prepare("REPLACE INTO `text` (name, text) VALUES (?, ?)");
 

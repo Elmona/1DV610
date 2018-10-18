@@ -2,7 +2,7 @@
 namespace view;
 
 class LayoutView {
-    public function render($isLoggedIn, FormView $v, DateTimeView $dtv) {
+    public function render($isLoggedIn, FormView $v, DateTimeView $dtv): string {
         return '<!DOCTYPE html>
       <html>
         <head>
@@ -32,7 +32,7 @@ class LayoutView {
         }
     }
 
-    private function register() {
+    private function register(): string {
         if (isset($_GET['register'])) {
             return '<a href="?">Back to login</a>';
         } else {
@@ -40,7 +40,7 @@ class LayoutView {
         }
     }
 
-    private function renderIsLoggedIn($isLoggedIn) {
+    private function renderIsLoggedIn($isLoggedIn): string {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         } else {
