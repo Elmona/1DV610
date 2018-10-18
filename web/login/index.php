@@ -5,6 +5,7 @@ require_once 'model/UserLoginData.php';
 require_once 'model/RegisterData.php';
 require_once 'model/Cookie.php';
 require_once 'model/Session.php';
+require_once 'model/Exceptions.php';
 
 require_once 'controller/LoginController.php';
 require_once 'controller/MainController.php';

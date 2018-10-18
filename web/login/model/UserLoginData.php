@@ -9,11 +9,11 @@ class UserLoginData {
 
     public function __construct($userName, $password, $keepLogin) {
         if (!$userName) {
-            throw new \Exception('Username is missing');
+            throw new \UserNameMissing();
         }
 
         if (!$password) {
-            throw new \Exception('Password is missing');
+            throw new \PasswordMissing();
         }
 
         $this->userName = $userName;

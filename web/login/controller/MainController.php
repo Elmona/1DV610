@@ -56,27 +56,18 @@ class MainController {
                     $this->registerView->message(\view\Messages::$userExists);
                 }
             }
+        } catch (\PasswordDontMatch $e) {
+            $this->registerView->message(\view\Messages::$passwordDontMatch);
+        } catch (\ShortPassword $e) {
+            $this->registerView->message(\view\Messages::$shortPassword);
+        } catch (\ShortUserName $e) {
+            $this->registerView->message(\view\Messages::$shortUsername);
+        } catch (\ShortUserNameAndPassword $e) {
+            $this->registerView->message(\view\Messages::$shortUsernameAndPassword);
+        } catch (\InvalidChars $e) {
+            $this->registerView->message(\view\Messages::$invalidChars);
         } catch (\Exception $e) {
-            switch ($e->getMessage()) {
-                case 'passwordDontMatch':
-                    $this->registerView->message(\view\Messages::$passwordDontMatch);
-                    break;
-                case 'shortPassword':
-                    $this->registerView->message(\view\Messages::$shortPassword);
-                    break;
-                case 'shortUsername':
-                    $this->registerView->message(\view\Messages::$shortUsername);
-                    break;
-                case 'shortUsernameAndPassword':
-                    $this->registerView->message(\view\Messages::$shortUsernameAndPassword);
-                    break;
-                case 'invalidChars':
-                    $this->registerView->message(\view\Messages::$invalidChars);
-                    break;
-                default:
-                    $this->registerView->message(\view\Messages::$unknownError);
-                    break;
-            }
+            $this->registerView->message(\view\Messages::$unknownError);
         }
 
         return false;
@@ -105,18 +96,12 @@ class MainController {
             } else {
                 $this->loginView->message(\view\Messages::$wrongNameOrPassword);
             }
+        } catch (\UserNameMissing $e) {
+            $this->loginView->message(\view\Messages::$usernameMissing);
+        } catch (\PasswordMissing $e) {
+            $this->loginView->message(\view\Messages::$passwordMissing);
         } catch (\Exception $e) {
-            switch ($e->getMessage()) {
-                case 'Username is missing':
-                    $this->loginView->message(\view\Messages::$usernameMissing);
-                    break;
-                case 'Password is missing':
-                    $this->loginView->message(\view\Messages::$passwordMissing);
-                    break;
-                default:
-                    $this->loginView->message(\view\Messages::$unknownError);
-                    break;
-            }
+            $this->loginView->message(\view\Messages::$unknownError);
         }
 
         return false;

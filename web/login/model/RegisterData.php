@@ -8,30 +8,24 @@ class RegisterData {
     private $passwordRepeat;
 
     public function __construct($username, $password, $passwordRepeat) {
-        $msg = '';
+        if (!$username && !$password && !$passwordRepeat) {
+            throw new \ShortUserNameAndPassword();
+        }
 
         if ($password != $passwordRepeat) {
-            $msg = 'passwordDontMatch';
+            throw new \PasswordDontMatch();
         }
 
         if (strlen($password) < 6) {
-            $msg = 'shortPassword';
+            throw new \ShortPassword();
         }
 
         if (strlen($username) < 3) {
-            $msg = 'shortUsername';
-        }
-
-        if (!$username && !$password && !$passwordRepeat) {
-            $msg = 'shortUsernameAndPassword';
+            throw new \ShortUserName();
         }
 
         if ($username != str_replace(array("<", ">"), "", $username)) {
-            $msg = 'invalidChars';
-        }
-
-        if (strlen($msg) > 0) {
-            throw new \Exception($msg);
+            throw new \InvalidChars();
         }
 
         $this->username = $username;
