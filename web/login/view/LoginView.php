@@ -70,7 +70,7 @@ class LoginView extends \view\FormView {
         return self::$cookiePassword;
     }
 
-    public function registeredUsername($username): string {
+    public function registeredUsername($username): void {
         $this->newUsername = $username;
     }
 
