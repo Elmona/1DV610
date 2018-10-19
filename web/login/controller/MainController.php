@@ -27,7 +27,7 @@ class MainController {
 
         if ($this->loginView->tryingToRegister()) {
             if ($this->register()) {
-                header('Location: /');
+                header('location:?');
                 die();
             } else {
                 return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
