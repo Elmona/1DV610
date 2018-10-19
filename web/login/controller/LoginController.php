@@ -14,9 +14,9 @@ class LoginController {
 
     private static $userAgent;
 
-    public function __construct(\view\LoginView $loginView, \model\Database $database) {
+    public function __construct(\view\LoginView $loginView, \model\Database $database, \model\Session $session) {
         $this->cookie = new \model\Cookie();
-        $this->session = new \model\Session();
+        $this->session = $session;
         $this->database = $database;
 
         self::$cookieName = $loginView->getCookieName();

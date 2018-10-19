@@ -6,11 +6,27 @@ class Session {
     private static $sessionName = 'sessionName';
     private static $sessionPassword = 'sessionPassword';
     private static $sessionFingerprint = 'fingerprint';
+    private static $tempUsername = 'tempUsername';
     private static $pepper;
 
     public function __construct() {
         self::$pepper = $_ENV['pepper'];
     }
+
+    public function newUserRegistered(string $name): void {
+        $_SESSION[self::$tempUsername] = $name;
+    }
+
+    public function isNewUserRegistered(): bool {
+        return isset($_SESSION[self::$tempUsername]);
+    }
+
+    public function getNewRegisteredUserName(): string {
+        $newUserName = $_SESSION[self::$tempUsername];
+        unset($_SESSION[self::$tempUsername]);
+        return $newUserName;
+    }
+
     public function isLoggedInBySession($userAgent): bool {
         return isset($_SESSION[self::$sessionFingerprint])
         && $_SESSION[self::$sessionFingerprint] == md5($userAgent . self::$pepper);

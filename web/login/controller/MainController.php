@@ -17,8 +17,9 @@ class MainController {
         $this->dateTimeView = new \view\DateTimeView();
 
         $this->database = new \model\Database();
+        $this->session = new \model\Session();
 
-        $this->loginController = new \controller\LoginController($this->loginView, $this->database);
+        $this->loginController = new \controller\LoginController($this->loginView, $this->database, $this->session);
     }
 
     public function returnHTML(): string {
@@ -26,7 +27,7 @@ class MainController {
 
         if ($this->loginView->tryingToRegister()) {
             if ($this->register()) {
-                return $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+                header('Location: /');
             } else {
                 return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
             }
@@ -36,6 +37,9 @@ class MainController {
             $isLoggedIn = $this->login();
         } else if ($this->loginView->tryingToLogout() && $isLoggedIn) {
             $isLoggedIn = $this->logout();
+        } else if ($this->session->isNewUserRegistered()) {
+            $newUserName = $this->session->getNewRegisteredUserName();
+            $this->loginView->registeredUsername($newUserName);
         }
 
         return $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView);
@@ -48,8 +52,7 @@ class MainController {
                     $this->registerView->getPassword(), $this->registerView->getPasswordRepeat());
 
                 if ($this->database->registerNewUser($registerData)) {
-                    $this->loginView->message(\view\Messages::$registeredNewUser);
-                    $this->loginView->registeredUsername($registerData->username());
+                    $this->session->newUserRegistered($registerData->username());
 
                     return true;
                 } else {
