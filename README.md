@@ -1,22 +1,20 @@
-# Course 1dv610 at Linnaeus university.  
+# Course 1DV610 at Linnaeus university.  
 
-The project is a MVC application written in `php`. A login/register module with some extra added feature. To get the application running you first have to install `Docker` and `docker-compose`.  
+To get the application running, you need Docker and `docker-compose`installed and working.
+```bash
+git clone https://github.com/Elmona/1DV610.git
+cd 1DV610
+chmod +x createConfigs.sh
+./createConfigs.sh
+docker-compose up
+```
   
-Download the code with `git clone https://github.com/Elmona/1DV610.git` && `cd 1DV610`.
-
-There is two files you have to edit to get everything running. I have provided example files that you can copy and edit.  
-`cp ./web/Config.example.php ./web/Config.php`  
-`vim ./web/Config.php`  
-
-`cp ./.env.example ./.env`  
-`vim ./env`  
-
-To get the application running.  
-`docker-compose up`  
+The application should be running at `http://localhost:8000`  
   
-Use your favorite browser and type go to this adress `http://localhost:8000` (If you want to use this application in production I strongly advise `https://`)
-
 You can find a running version here. [Workshop2](https://gosemojs.org/L2)
-
 Username: `Admin`  
 Password: `testar`
+  
+## WARNING
+> Because of this code was developed against an automatic test I use a wonky session hack to cheat the test.
+> I strongly advise to use https and set cookie secure instead.
