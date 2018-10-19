@@ -28,4 +28,8 @@ class UserLoginData {
     public function password(): string {
         return $this->password;
     }
+
+    public function keeplogin(): bool {
+        return $this->keepLogin ? true : false;
+    }
 }

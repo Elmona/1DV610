@@ -57,12 +57,14 @@ class LoginController {
         $this->session->saveSessionName($userLoginData->username());
         $this->session->saveSessionFingerprint(self::$userAgent);
 
-        $this->cookie->setcookie(self::$cookieName, $userLoginData->username());
-        $this->cookie->setcookie(self::$cookiePassword, $randomString);
+        if ($userLoginData->keeplogin()) {
+            $this->cookie->setcookie(self::$cookieName, $userLoginData->username());
+            $this->cookie->setcookie(self::$cookiePassword, $randomString);
 
-        $this->database->
-            updateCookieAndUserAgent($userLoginData->username(),
-            $randomString, self::$userAgent);
+            $this->database->
+                updateCookieAndUserAgent($userLoginData->username(),
+                $randomString, self::$userAgent);
+        }
     }
 
     public function logout(): void {

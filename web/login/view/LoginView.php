@@ -94,6 +94,10 @@ class LoginView extends \view\FormView {
         return $this->getPost(self::$password);
     }
 
+    public function getKeepMeLoggedIn() {
+        return $this->getPost(self::$keep);
+    }
+
     public function message($msg): void {
         $this->message = $msg;
     }

@@ -25,9 +25,9 @@ class MainController {
     public function returnHTML(): string {
         $isLoggedIn = $this->loginController->isLoggedInBySession();
 
-        if ($this->loginView->tryingToRegister()) {
+        if ($this->loginView->tryingToRegister() && !$isLoggedIn) {
             if ($this->register()) {
-                header('location:?');
+                header('Location: /');
                 die();
             } else {
                 return $this->layoutView->render(false, $this->registerView, $this->dateTimeView);
@@ -91,8 +91,7 @@ class MainController {
     private function login(): bool {
         try {
             $userLoginData = new \model\UserLoginData($this->loginView->getUserName(),
-                $this->loginView->getPassword(), false);
-
+                $this->loginView->getPassword(), $this->loginView->getKeepMeLoggedIn());
             if ($this->database->testcredentials($userLoginData)) {
                 $this->loginController->saveLogin($userLoginData);
                 $this->loginView->message(\view\Messages::$welcome);
