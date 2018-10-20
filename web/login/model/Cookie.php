@@ -17,4 +17,8 @@ class Cookie {
     public function getCookie($name): string {
         return $_COOKIE[$name];
     }
+
+    public function generateRandomString() {
+        return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 1) . substr(md5(time()), 1);
+    }
 }
