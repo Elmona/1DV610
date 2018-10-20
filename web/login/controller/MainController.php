@@ -39,6 +39,7 @@ class MainController {
         } else if ($this->loginView->tryingToLogout() && $isLoggedIn) {
             $isLoggedIn = $this->logout();
         } else if ($this->session->isNewUserRegistered()) {
+            $this->loginView->message(\view\Messages::$registeredNewUser);
             $newUserName = $this->session->getNewRegisteredUserName();
             $this->loginView->registeredUsername($newUserName);
         }
