@@ -51,4 +51,8 @@ class Session {
     public function destroySession(): void {
         session_destroy();
     }
+
+    public function generateRandomString() {
+        return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 1) . substr(md5(time()), 1);
+    }
 }

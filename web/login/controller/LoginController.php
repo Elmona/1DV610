@@ -36,7 +36,7 @@ class LoginController {
     }
 
     public function saveLoginByCookie(): void {
-        $randomString = $this->generateRandomString();
+        $randomString = $this->session->generateRandomString();
 
         $this->session->saveSessionName($this->cookie->getCookie(self::$cookieName));
         $this->session->saveSessionFingerprint(self::$userAgent);
@@ -52,7 +52,7 @@ class LoginController {
     }
 
     public function saveLogin($userLoginData): void {
-        $randomString = $this->generateRandomString();
+        $randomString = $this->session->generateRandomString();
 
         $this->session->saveSessionName($userLoginData->username());
         $this->session->saveSessionFingerprint(self::$userAgent);
@@ -72,9 +72,5 @@ class LoginController {
         $this->cookie->removeCookie(self::$cookiePassword);
 
         $this->session->destroySession();
-    }
-
-    private function generateRandomString() {
-        return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 1) . substr(md5(time()), 1);
     }
 }
