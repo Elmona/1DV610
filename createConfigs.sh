@@ -1,5 +1,16 @@
 #!/bin/bash
 
+file=./.env
+if [ -f "$file" ]; then
+    echo "WARNING: Files already exist are you sure you want to overwrite with new passwords?"
+    read -p "Continue (y/n)?" choice
+    if [[ ! $choice =~ ^[Yy]$ ]]
+    then
+        echo "Exit"
+        exit
+    fi
+fi
+
 MYSQL_USERNAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1)
 ROOT=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 18 | head -n 1)
