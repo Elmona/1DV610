@@ -13,6 +13,7 @@ cat > ./web/Config.php <<EOF
 \$_ENV['display_errors'] = 'On';
 \$_ENV['timezone'] = 'Europe/Stockholm';
 \$_ENV['pepper'] = '$PEPPER';
+\$_ENV['parameter'] = '/';
 
 class Config {
     public \$host = 'mysql';
