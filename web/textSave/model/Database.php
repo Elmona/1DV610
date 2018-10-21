@@ -30,14 +30,18 @@ class Database {
 
         $returnArr = array();
         foreach ($data as $post) {
+            // TODO: This is wonky.
             array_push($returnArr, new Post($post[0], $post[3], $post[1]));
         }
 
         return $returnArr;
     }
 
-    public function saveText(String $username, object $post): void {
-        // TODO: Check so user owns post.
+    public function saveText(String $username, object $post): bool {
+        if (!$this->checkIfUserOwnsPost($username, $post->getId())) {
+            return false;
+        }
+
         $stmt = $this->mysqli->
             prepare("REPLACE INTO `text` (id, name, text) VALUES (?, ?, ?)");
 
@@ -47,6 +51,8 @@ class Database {
 
         $stmt->bind_param("sss", $id, $name, $text);
         $stmt->execute();
+
+        return true;
     }
 
     public function addNewPost(String $username): void {
@@ -59,8 +65,11 @@ class Database {
         $stmt->execute();
     }
 
-    public function deletePost(String $username, $post): void {
-        // TODO: Check so user owns post.
+    public function deletePost(String $username, $post): bool {
+        if (!$this->checkIfUserOwnsPost($username, $post->getId())) {
+            return false;
+        }
+
         $stmt = $this->mysqli->
             prepare("DELETE FROM `text` WHERE id=?");
 
@@ -68,5 +77,20 @@ class Database {
 
         $stmt->bind_param("s", $id);
         $stmt->execute();
+
+        return true;
+    }
+
+    private function checkIfUserOwnsPost(String $username, $id): bool {
+        $stmt = $this->mysqli->
+            prepare("SELECT name FROM `text` WHERE id=?");
+
+        $stmt->bind_param("s", $id);
+        $stmt->bind_result($usernameFromDB);
+
+        $stmt->execute();
+        $stmt->fetch();
+
+        return $username == $usernameFromDB;
     }
 }

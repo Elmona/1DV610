@@ -14,6 +14,7 @@ class LayoutView {
 
     public function returnHTML(): string {
         return '
+        <br>
         <div>
             <h2>' . $this->message . '</h2>
             <form method="post">
@@ -36,6 +37,10 @@ class LayoutView {
         $this->message = 'Deleted post.';
     }
 
+    public function messageStopItHacker(): void {
+        $this->message = 'Nice try hacker!';
+    }
+
     public function addingNewPost(): bool {
         return isset($_POST[$this->new]);
     }
@@ -46,10 +51,6 @@ class LayoutView {
 
     public function isDeleting(): bool {
         return isset($_POST[$this->delete]);
-    }
-
-    public function getText(): string {
-        return $_POST[$this->data];
     }
 
     public function getPost() {

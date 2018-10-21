@@ -23,19 +23,22 @@ class MainController {
         if ($this->layoutView->isSaving()) {
             $post = $this->layoutView->getPost();
 
-            $this->database->
-                saveText($this->username, $post);
+            if ($this->database->saveText($this->username, $post)) {
+                $this->layoutView->messageSaved();
+            } else {
+                $this->layoutView->messageStopItHacker();
+            }
 
-            $this->layoutView->messageSaved();
         }
 
         if ($this->layoutView->isDeleting()) {
             $post = $this->layoutView->getPost();
 
-            $this->database->
-                deletePost($this->username, $post);
-
-            $this->layoutView->messageDeletedPost();
+            if ($this->database->deletePost($this->username, $post)) {
+                $this->layoutView->messageDeletedPost();
+            } else {
+                $this->layoutView->messageStopItHacker();
+            }
         }
 
         $data = $this->database->getText($this->username);
