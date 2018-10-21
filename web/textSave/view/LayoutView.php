@@ -63,7 +63,7 @@ class LayoutView {
                 <form method="post">
                     <input name="' . $this->id . '" value="' . $post->getId() . '" type="hidden">
                     <label for="' . $this->data . '">Last edited ' . $post->getDate() . '</label><br>
-                    <textarea rows="6" cols="50" name="' . $this->data . '">' . $post->getText() . '</textarea><br>
+                    <textarea rows="6" cols="50" name="' . $this->data . '">' . htmlspecialchars($post->getText()) . '</textarea><br>
                     <button name="' . $this->save . '">Save</button>
                     <button name="' . $this->delete . '">Delete</button>
                 </form><br><br>';
