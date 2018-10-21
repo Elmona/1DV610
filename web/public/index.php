@@ -1,6 +1,5 @@
 <?php
 
-// I strongly advise you to change values in this file.
 require_once '../Config.php';
 
 require_once '../textSave/index.php';
