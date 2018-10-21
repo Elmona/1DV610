@@ -14,11 +14,13 @@ The application should be running at `http://localhost:8000`
   
 ## The system contains of two parts.
   
-### Login (100% on both usecases and test cases is implemented)
+### Login
+_(100% on both usecases and test cases is implemented)_  
 [Use cases](https://github.com/dntoll/1dv610/blob/master/assignments/A2_resources/UseCases.md)  
 [Test cases](https://github.com/dntoll/1dv610/blob/master/assignments/A2_resources/TestCases.md)
   
-### Text Save (100% on both usecases and test cases is implemented)
+### Text Save
+_(100% on both usecases and test cases is implemented)_  
 [Use cases](https://github.com/Elmona/1DV610/wiki/Use-case---textSave)  
 [Test cases](https://github.com/Elmona/1DV610/wiki/Test-cases---Text-Save)  
   
