@@ -14,10 +14,31 @@ class MainController {
     }
 
     public function returnHTML(): string {
-        if ($this->layoutView->isSaving()) {
+        if ($this->layoutView->addingNewPost()) {
             $this->database->
-                saveText($this->username, $this->layoutView->getText());
-            $this->layoutView->messageSaved();
+                addNewPost($this->username);
+            $this->layoutView->messageAddNewPost();
+        }
+
+        if ($this->layoutView->isSaving()) {
+            $post = $this->layoutView->getPost();
+
+            if ($this->database->saveText($this->username, $post)) {
+                $this->layoutView->messageSaved();
+            } else {
+                $this->layoutView->messageStopItHacker();
+            }
+
+        }
+
+        if ($this->layoutView->isDeleting()) {
+            $post = $this->layoutView->getPost();
+
+            if ($this->database->deletePost($this->username, $post)) {
+                $this->layoutView->messageDeletedPost();
+            } else {
+                $this->layoutView->messageStopItHacker();
+            }
         }
 
         $data = $this->database->getText($this->username);

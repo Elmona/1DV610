@@ -4,6 +4,7 @@ namespace TextSave;
 
 require_once 'controller/MainController.php';
 require_once 'model/Database.php';
+require_once 'model/Post.php';
 require_once 'view/LayoutView.php';
 
 class TextSave {
