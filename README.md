@@ -10,8 +10,9 @@ docker-compose up
 ```
   
 The application should be running at `http://localhost:8000`  
+(You don't need to configure anything more, the script and Docker do the rest)  
   
-## The system contains of two parts, this code fulfills 100% of usecases and testcases.
+## The system contains of two parts.
   
 ### Login
 [Use cases](https://github.com/dntoll/1dv610/blob/master/assignments/A2_resources/UseCases.md)  
