@@ -11,6 +11,16 @@ docker-compose up
   
 The application should be running at `http://localhost:8000`  
   
+## The system contains of two parts, this code fulfills 100% of usecases and testcases.
+  
+### Login
+[Use cases](https://github.com/dntoll/1dv610/blob/master/assignments/A2_resources/UseCases.md)  
+[Test cases](https://github.com/dntoll/1dv610/blob/master/assignments/A2_resources/TestCases.md)
+  
+### Text Save
+[Use cases](https://github.com/Elmona/1DV610/wiki/Use-case---textSave)  
+[Test cases](https://github.com/Elmona/1DV610/wiki/Test-cases---Text-Save)  
+  
 You can find a running version here. [Workshop2](https://gosemojs.org/L2)  
 Username: `Admin`  
 Password: `testar`  
