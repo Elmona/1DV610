@@ -20,18 +20,16 @@ class Database {
 
     public function getText(String $username) {
         $stmt = $this->mysqli->
-            prepare("SELECT * FROM `text` WHERE name=?");
+            prepare("SELECT id, text, timestamp FROM `text` WHERE name=?");
 
         $stmt->bind_param("s", $username);
 
         $stmt->execute();
-        $res = $stmt->get_result();
-        $data = $res->fetch_all();
+        $stmt->bind_result($id, $text, $date);
 
         $returnArr = array();
-        foreach ($data as $post) {
-            // TODO: This is wonky.
-            array_push($returnArr, new Post($post[0], $post[3], $post[1]));
+        while ($stmt->fetch()) {
+            array_push($returnArr, new Post($id, $text, $date));
         }
 
         return $returnArr;
